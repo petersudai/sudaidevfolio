@@ -30,12 +30,11 @@ const SM_SCREENS = [
 
 // Cycling across the main platform and two distinct client identities
 const CF_SCREENS = [
-  { src: "/images/creative-folio/main.png",   label: "Platform home"             },
-  { src: "/images/creative-folio/demos.png",  label: "Client demos"              },
-  { src: "/images/amara/hero.png",            label: "AMARA — DJ site"           },
-  { src: "/images/amara/music.png",           label: "AMARA — Audio player"      },
-  { src: "/images/nadia-osei/hero.png",       label: "Nadia Osei — Photography"  },
-  { src: "/images/nadia-osei/about.png",      label: "Nadia Osei — About"        },
+  { src: "/images/creative-folio/main.png",  label: "Platform home"             },
+  { src: "/images/amara/hero.png",           label: "AMARA — DJ site"           },
+  { src: "/images/amara/about.png",          label: "AMARA — About"             },
+  { src: "/images/nadia-osei/hero.png",      label: "Nadia Osei — Photography"  },
+  { src: "/images/nadia-osei/about.png",     label: "Nadia Osei — About"        },
 ];
 
 /* ─── Reusable project card — full-width horizontal layout ──── */
@@ -98,7 +97,7 @@ function ProjectCard({
                 src={s.src}
                 alt={`${title} — ${s.label}`}
                 fill
-                className="object-cover object-top"
+                className="object-contain object-top"
                 sizes="(max-width: 1024px) 100vw, 60vw"
                 quality={100}
                 priority={i === 0}
@@ -263,9 +262,9 @@ export function Work() {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-[1fr_420px]">
+          <div className="grid lg:grid-cols-[1fr_380px]">
             {/* Screenshots */}
-            <div className="relative min-h-[380px] lg:min-h-[540px] overflow-hidden border-b lg:border-b-0 lg:border-r border-teal-500/[0.07]"
+            <div className="relative min-h-[300px] lg:min-h-[400px] overflow-hidden border-b lg:border-b-0 lg:border-r border-teal-500/[0.07]"
                  style={{ background: "#03080e" }}>
               {TF_SCREENS.map((s, i) => (
                 <div key={s.src}
