@@ -35,7 +35,7 @@ const CF_SCREENS = [
   { src: "/images/nadia-osei/hero.png",        label: "Nadia Osei — Photography"  },
 ];
 
-/* ─── Reusable project card ──────────────────────────────────── */
+/* ─── Reusable project card — full-width horizontal layout ──── */
 function ProjectCard({
   title, type, url, description, features, tags, screens, accent, delay, inView,
 }: {
@@ -60,7 +60,7 @@ function ProjectCard({
   return (
     <div
       className={cn(
-        "group flex flex-col rounded-3xl overflow-hidden border transition-all duration-700",
+        "group rounded-3xl overflow-hidden border transition-all duration-700",
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       )}
       style={{
@@ -70,136 +70,129 @@ function ProjectCard({
       }}
       onMouseEnter={e => {
         const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = `${accent}28`;
+        el.style.borderColor = `${accent}30`;
         el.style.boxShadow = `0 24px 60px rgba(0,0,0,0.3), 0 0 0 1px ${accent}14`;
-        el.style.transform = "translateY(-4px)";
       }}
       onMouseLeave={e => {
         const el = e.currentTarget as HTMLElement;
         el.style.borderColor = "rgba(255,255,255,0.06)";
         el.style.boxShadow = "";
-        el.style.transform = "";
       }}
     >
-      {/* Screenshot cycling */}
-      <div className="relative h-[230px] flex-shrink-0 overflow-hidden" style={{ background: "#03080e" }}>
-        {screens.map((s, i) => (
-          <div
-            key={s.src}
-            className="absolute inset-0 transition-opacity duration-800"
-            style={{ opacity: active === i ? 1 : 0 }}
-          >
-            <Image
-              src={s.src}
-              alt={`${title} — ${s.label}`}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              quality={100}
-              priority={i === 0}
-            />
-          </div>
-        ))}
+      {/* Accent top line */}
+      <div className="h-px w-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+           style={{ background: `linear-gradient(90deg, transparent, ${accent}60, transparent)` }} />
 
-        {/* Bottom gradient so dots are readable */}
-        <div className="absolute inset-0 pointer-events-none"
-             style={{ background: "linear-gradient(to bottom, transparent 55%, rgba(3,8,14,0.65) 100%)" }} />
-
-        {/* Live pill */}
-        <div className="absolute top-3.5 left-4 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-             style={{ background: "rgba(3,8,14,0.82)", border: `1px solid ${accent}35` }}>
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: accent, boxShadow: `0 0 6px ${accent}` }} />
-          <span className="text-[9px] font-bold uppercase tracking-[0.14em]" style={{ color: accent }}>Live</span>
-        </div>
-
-        {/* Screen label */}
-        <div className="absolute bottom-3.5 right-4 z-10">
-          <span className="text-[9px] font-mono px-2 py-0.5 rounded-full"
-                style={{ background: "rgba(3,8,14,0.82)", border: "1px solid rgba(255,255,255,0.08)", color: "var(--t4)" }}>
-            {screens[active].label}
-          </span>
-        </div>
-
-        {/* Dot switcher */}
-        <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5">
+      <div className="grid lg:grid-cols-[1fr_380px]">
+        {/* Screenshot area */}
+        <div className="relative min-h-[300px] lg:min-h-[400px] overflow-hidden border-b lg:border-b-0 lg:border-r border-white/[0.05]"
+             style={{ background: "#03080e" }}>
           {screens.map((s, i) => (
-            <button
-              key={s.src}
-              onClick={() => setActive(i)}
-              aria-label={s.label}
-              style={{
-                width: active === i ? "18px" : "5px",
-                height: "5px",
-                borderRadius: "3px",
-                background: active === i ? accent : "rgba(255,255,255,0.22)",
-                transition: "all 0.3s ease",
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Card body */}
-      <div className="flex flex-col flex-1 p-6">
-        <span className="text-[10px] uppercase tracking-[0.16em] font-semibold mb-1.5" style={{ color: accent }}>
-          {type}
-        </span>
-        <h3 className="font-heading font-bold text-[19px] mb-3 transition-colors duration-300 group-hover:text-teal-300"
-            style={{ color: "#e8f0f5", lineHeight: 1.2 }}>
-          {title}
-        </h3>
-        <p className="text-[13px] leading-relaxed mb-4 transition-colors duration-300 group-hover:text-[#7a9ab0]"
-           style={{ color: "#4a6070" }}>
-          {description}
-        </p>
-
-        {/* Feature dots */}
-        <div className="grid grid-cols-2 gap-y-2 gap-x-3 mb-5">
-          {features.map(f => (
-            <div key={f} className="flex items-center gap-1.5">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0">
-                <circle cx="6" cy="6" r="5" stroke={accent} strokeWidth="1" strokeOpacity="0.35"/>
-                <circle cx="6" cy="6" r="2" fill={accent}/>
-              </svg>
-              <span className="text-[11px]" style={{ color: "var(--t3)" }}>{f}</span>
+            <div key={s.src}
+                 className="absolute inset-0 transition-opacity duration-700"
+                 style={{ opacity: active === i ? 1 : 0 }}>
+              <Image
+                src={s.src}
+                alt={`${title} — ${s.label}`}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                quality={100}
+                priority={i === 0}
+              />
             </div>
           ))}
-        </div>
 
-        {/* Tags */}
-        <div className="flex flex-wrap gap-1.5 mb-5 pt-4 border-t border-white/[0.05]">
-          {tags.map(t => (
-            <span key={t} className="text-[10px] px-2.5 py-1 rounded-full"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", color: "#2a4155" }}>
-              {t}
+          {/* Live pill */}
+          <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+               style={{ background: "rgba(3,8,14,0.85)", border: `1px solid ${accent}35` }}>
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: accent, boxShadow: `0 0 5px ${accent}` }} />
+            <span className="text-[9px] font-bold uppercase tracking-[0.14em]" style={{ color: accent }}>Live</span>
+          </div>
+
+          {/* Screen label */}
+          <div className="absolute bottom-4 right-4 z-10">
+            <span className="text-[10px] font-mono px-2.5 py-1 rounded-full"
+                  style={{ background: "rgba(3,8,14,0.85)", border: "1px solid rgba(255,255,255,0.07)", color: "var(--t4)" }}>
+              {screens[active].label}
             </span>
-          ))}
+          </div>
+
+          {/* Dot switcher */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+            {screens.map((s, i) => (
+              <button key={s.src} onClick={() => setActive(i)} aria-label={s.label}
+                      style={{
+                        width: active === i ? "20px" : "5px", height: "5px",
+                        borderRadius: "3px", transition: "all 0.3s",
+                        background: active === i ? accent : "rgba(255,255,255,0.2)",
+                      }} />
+            ))}
+          </div>
         </div>
 
-        {/* CTA — pushed to bottom */}
-        <div className="mt-auto">
-          <a
-            href={url} target="_blank" rel="noopener noreferrer"
-            className="group/btn flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-300"
-            style={{ background: `${accent}16`, border: `1px solid ${accent}30`, color: accent }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = `${accent}26`;
-              el.style.transform = "translateY(-2px)";
-              el.style.boxShadow = `0 8px 24px ${accent}22`;
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = `${accent}16`;
-              el.style.transform = "";
-              el.style.boxShadow = "";
-            }}
-          >
-            View live site
-            <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" viewBox="0 0 14 14" fill="none">
-              <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
+        {/* Content */}
+        <div className="p-8 flex flex-col justify-between">
+          <div>
+            <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: accent }}>
+              {type}
+            </span>
+            <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-3 transition-colors duration-300 group-hover:text-teal-300"
+                style={{ color: "#e8f0f5", lineHeight: 1.2 }}>
+              {title}
+            </h3>
+            <p className="text-[13px] leading-relaxed mb-5 transition-colors duration-300 group-hover:text-[#7a9ab0]"
+               style={{ color: "#4a6070" }}>
+              {description}
+            </p>
+
+            {/* Feature list */}
+            <div className="space-y-2 mb-5">
+              {features.map(f => (
+                <div key={f} className="flex items-center gap-2">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0">
+                    <circle cx="6" cy="6" r="5" stroke={accent} strokeWidth="1" strokeOpacity="0.35"/>
+                    <circle cx="6" cy="6" r="2" fill={accent}/>
+                  </svg>
+                  <span className="text-[12px]" style={{ color: "var(--t3)" }}>{f}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            {/* Tags */}
+            <div className="flex flex-wrap gap-1.5 mb-5 pt-4 border-t border-white/[0.05]">
+              {tags.map(t => (
+                <span key={t} className="text-[10px] px-2.5 py-1 rounded-full"
+                      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", color: "#2a4155" }}>
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <a href={url} target="_blank" rel="noopener noreferrer"
+               className="group/btn flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-300"
+               style={{ background: `${accent}16`, border: `1px solid ${accent}30`, color: accent }}
+               onMouseEnter={e => {
+                 const el = e.currentTarget as HTMLElement;
+                 el.style.background = `${accent}26`;
+                 el.style.transform = "translateY(-2px)";
+                 el.style.boxShadow = `0 8px 24px ${accent}22`;
+               }}
+               onMouseLeave={e => {
+                 const el = e.currentTarget as HTMLElement;
+                 el.style.background = `${accent}16`;
+                 el.style.transform = "";
+                 el.style.boxShadow = "";
+               }}>
+              View live site
+              <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" viewBox="0 0 14 14" fill="none">
+                <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -361,13 +354,13 @@ export function Work() {
           </div>
         </div>
 
-        {/* ── Two secondary projects ──────────────────────────── */}
-        <div className="grid md:grid-cols-2 gap-5">
+        {/* ── Secondary projects — stacked full-width ─────────── */}
+        <div className="flex flex-col gap-5">
           <ProjectCard
-            title="Sarah Mitchell Consulting"
-            type="High-conversion business site"
-            url="https://sarahmitchelcorp.vercel.app"
-            description="Built for a business consultant targeting mid-market CEOs. Every section earns its place — from the credibility-first hero and floating proof overlays to a booking form that qualifies leads before the first call."
+            title="Professional Consulting Website"
+            type="Business website · Lead generation"
+            url="https://sarahmitchellcorp.vercel.app"
+            description="Built for a business consultant targeting mid-market CEOs. Every section earns its place. Credibility-first hero with floating proof overlays, social validation built into the layout, and a booking form designed to qualify leads before the first call is ever made."
             features={[
               "Conversion-first layout",
               "Lead-qualifying booking form",
@@ -382,9 +375,9 @@ export function Work() {
           />
           <ProjectCard
             title="Creative Portfolio Platform"
-            type="Productized creative service"
+            type="Productized service · Creatives"
             url="https://sudaicreativefolio.vercel.app"
-            description="One platform, any creative identity. Built for DJs, photographers and artists who need a site that actually represents their work. Custom audio player, masonry gallery with lightbox, booking tiers and a design language that adapts completely per client."
+            description="One platform, any creative identity. Built for DJs, photographers and visual artists who want a site that actually represents their work. Custom audio player with waveform visualisation, masonry gallery with lightbox, booking tiers and a design language that adapts completely per client."
             features={[
               "Custom audio player + waveforms",
               "Masonry gallery + lightbox",
@@ -394,7 +387,7 @@ export function Work() {
             tags={["Next.js", "TypeScript", "Tailwind", "Animations"]}
             screens={CF_SCREENS}
             accent="#7c3aed"
-            delay={300}
+            delay={250}
             inView={inView}
           />
         </div>
