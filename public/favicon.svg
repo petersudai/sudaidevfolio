@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Background squircle -->
+  <rect width="32" height="32" rx="9" fill="#070f18"/>
+  <!-- Teal border -->
+  <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="8.25" stroke="#14b8a6" stroke-width="1" stroke-opacity="0.35"/>
+  <!-- Subtle inner glow top -->
+  <rect x="1" y="1" width="30" height="8" rx="0" fill="url(#glow)" opacity="0.4"/>
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#14b8a6" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- PS monogram — geometric, bold -->
+  <text
+    x="16"
+    y="21.5"
+    text-anchor="middle"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+    font-size="13.5"
+    font-weight="700"
+    fill="#14b8a6"
+    letter-spacing="-0.8"
+  >PS</text>
+</svg>
