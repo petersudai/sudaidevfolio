@@ -24,15 +24,18 @@ const TF_SCREENS = [
 
 const SM_SCREENS = [
   { src: "/images/sarah-mitchell/hero.png",    label: "Hero"         },
-  { src: "/images/sarah-mitchell/about.png",   label: "About Sarah"  },
+  { src: "/images/sarah-mitchell/about.png",   label: "About"        },
   { src: "/images/sarah-mitchell/booking.png", label: "Booking form" },
 ];
 
-// Cycling across three distinct design identities
+// Cycling across the main platform and two distinct client identities
 const CF_SCREENS = [
-  { src: "/images/creative-folio/main.png",   label: "Portfolio home"            },
-  { src: "/images/amara/hero.png",             label: "AMARA — DJ site"           },
-  { src: "/images/nadia-osei/hero.png",        label: "Nadia Osei — Photography"  },
+  { src: "/images/creative-folio/main.png",   label: "Platform home"             },
+  { src: "/images/creative-folio/demos.png",  label: "Client demos"              },
+  { src: "/images/amara/hero.png",            label: "AMARA — DJ site"           },
+  { src: "/images/amara/music.png",           label: "AMARA — Audio player"      },
+  { src: "/images/nadia-osei/hero.png",       label: "Nadia Osei — Photography"  },
+  { src: "/images/nadia-osei/about.png",      label: "Nadia Osei — About"        },
 ];
 
 /* ─── Reusable project card — full-width horizontal layout ──── */
