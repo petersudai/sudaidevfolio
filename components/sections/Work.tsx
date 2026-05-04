@@ -167,7 +167,7 @@ function ProjectCard({
             <div className="flex flex-wrap gap-1.5 mb-5 pt-4 border-t border-white/[0.05]">
               {tags.map(t => (
                 <span key={t} className="text-[10px] px-2.5 py-1 rounded-full"
-                      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", color: "#2a4155" }}>
+                      style={{ background: `${accent}0d`, border: `1px solid ${accent}30`, color: `${accent}99` }}>
                   {t}
                 </span>
               ))}
@@ -302,50 +302,63 @@ export function Work() {
             {/* Details */}
             <div className="p-8 flex flex-col justify-between">
               <div>
-                <div className="mb-5">
-                  <h3 className="font-heading font-bold text-[26px] mb-1 group-hover:text-teal-300 transition-colors duration-300"
-                      style={{ color: "#e8f0f5" }}>TicketForge</h3>
-                  <p className="text-[13px] font-medium" style={{ color: "rgba(20,184,166,0.7)" }}>
-                    The ticketing platform built for African events
-                  </p>
-                </div>
-                <p className="text-sm leading-relaxed font-normal mb-6 group-hover:text-[#7a9ab0] transition-colors duration-300"
+                <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: "var(--ac)" }}>
+                  Live SaaS · Event management
+                </span>
+                <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-3 transition-colors duration-300 group-hover:text-teal-300"
+                    style={{ color: "#e8f0f5", lineHeight: 1.2 }}>
+                  TicketForge
+                </h3>
+                <p className="text-[13px] leading-relaxed mb-5 transition-colors duration-300 group-hover:text-[#7a9ab0]"
                    style={{ color: "#4a6070" }}>
                   A full-cycle event management SaaS serving organizers across East Africa.
                   M-Pesa native payments, QR-based entry validation, real-time attendee dashboards
                   and tiered ticketing. All in one platform built from the ground up.
                 </p>
-                <div className="grid grid-cols-2 gap-2.5 mb-6">
+
+                {/* Feature list */}
+                <div className="space-y-2 mb-5">
                   {[
-                    { val: "M-Pesa",    desc: "Native payment integration"   },
-                    { val: "QR",        desc: "Instant entry validation"      },
-                    { val: "Multi-tier",desc: "General + VIP ticketing"       },
-                    { val: "Real-time", desc: "Live attendee dashboard"       },
-                  ].map(m => (
-                    <div key={m.val}
-                         className="rounded-xl p-3 group-hover:border-teal-500/[0.14] transition-all duration-300"
-                         style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(20,184,166,0.08)" }}>
-                      <div className="font-heading font-bold text-[14px] mb-0.5" style={{ color: "#e8f0f5" }}>{m.val}</div>
-                      <div className="text-[11px] leading-tight" style={{ color: "#3a5060" }}>{m.desc}</div>
+                    "M-Pesa native payment integration",
+                    "QR-based instant entry validation",
+                    "General + VIP tiered ticketing",
+                    "Real-time live attendee dashboard",
+                  ].map(f => (
+                    <div key={f} className="flex items-center gap-2">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0">
+                        <circle cx="6" cy="6" r="5" stroke="var(--ac)" strokeWidth="1" strokeOpacity="0.35"/>
+                        <circle cx="6" cy="6" r="2" fill="var(--ac)"/>
+                      </svg>
+                      <span className="text-[12px]" style={{ color: "var(--t3)" }}>{f}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <div className="flex flex-wrap gap-1.5 mb-6 pt-5 border-t border-teal-500/[0.07]">
+                <div className="flex flex-wrap gap-1.5 mb-5 pt-4 border-t border-white/[0.05]">
                   {["Next.js","Supabase","PostgreSQL","TypeScript","Tailwind","M-Pesa API"].map(s => (
-                    <span key={s} className="text-[10px] px-2.5 py-1 rounded-full group-hover:text-teal-500/80 transition-colors duration-300"
+                    <span key={s} className="text-[10px] px-2.5 py-1 rounded-full"
                           style={{ background: "rgba(20,184,166,0.06)", border: "1px solid rgba(20,184,166,0.12)", color: "rgba(20,184,166,0.55)" }}>
                       {s}
                     </span>
                   ))}
                 </div>
                 <a href="https://ticketforge.vercel.app" target="_blank" rel="noopener noreferrer"
-                   className="group/btn flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 w-full justify-center"
-                   style={{ background: "var(--ac)", color: "var(--s1)" }}
-                   onMouseEnter={e => { e.currentTarget.style.background="#0d9488"; e.currentTarget.style.boxShadow="0 8px 24px rgba(20,184,166,0.35)"; }}
-                   onMouseLeave={e => { e.currentTarget.style.background="var(--ac)"; e.currentTarget.style.boxShadow="none"; }}>
+                   className="group/btn flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-300"
+                   style={{ background: "rgba(20,184,166,0.12)", border: "1px solid rgba(20,184,166,0.25)", color: "var(--ac)" }}
+                   onMouseEnter={e => {
+                     const el = e.currentTarget as HTMLElement;
+                     el.style.background = "rgba(20,184,166,0.22)";
+                     el.style.transform = "translateY(-2px)";
+                     el.style.boxShadow = "0 8px 24px rgba(20,184,166,0.22)";
+                   }}
+                   onMouseLeave={e => {
+                     const el = e.currentTarget as HTMLElement;
+                     el.style.background = "rgba(20,184,166,0.12)";
+                     el.style.transform = "";
+                     el.style.boxShadow = "";
+                   }}>
                   View live app
                   <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" viewBox="0 0 14 14" fill="none">
                     <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
