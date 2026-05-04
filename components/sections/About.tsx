@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 function useInView(ref: React.RefObject<HTMLElement | null>, threshold = 0.08) {
@@ -32,24 +33,51 @@ export function About() {
   const [hover, setHover] = useState<string | null>(null);
 
   return (
-    <section id="about" className="py-32 relative overflow-hidden" style={{ background: "var(--s1)" }}>
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
-           style={{ background: "radial-gradient(ellipse,rgba(20,184,166,0.05) 0%,transparent 70%)" }}/>
+    <section id="about" className="py-32 relative overflow-hidden"
+             style={{
+               background: "var(--s1)",
+               backgroundImage: "radial-gradient(circle, rgba(20,184,166,0.055) 1px, transparent 1px)",
+               backgroundSize: "26px 26px",
+             }}>
+      {/* Atmospheric glows */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
+           style={{ background: "radial-gradient(ellipse, rgba(20,184,166,0.08) 0%, transparent 65%)" }}/>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+           style={{ background: "radial-gradient(ellipse, rgba(20,184,166,0.05) 0%, transparent 70%)" }}/>
       <div className="absolute top-0 inset-x-0 h-px"
-           style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.1),transparent)" }}/>
+           style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.12),transparent)" }}/>
 
       <div className="max-w-6xl mx-auto px-6" ref={ref}>
         <div className="grid lg:grid-cols-2 gap-20 items-start">
 
           {/* Left — bio */}
           <div className={cn("transition-all duration-700", v ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-px" style={{ background: "var(--ac)" }}/>
-              <span className="font-mono text-2xs" style={{ color: "var(--ac)", letterSpacing: "0.18em", textTransform: "uppercase" }}>About</span>
+
+            {/* Photo + label row */}
+            <div className="flex items-start gap-5 mb-8">
+              {/* Portrait */}
+              <div className="relative flex-shrink-0 w-[108px] h-[132px] rounded-2xl overflow-hidden"
+                   style={{ border: "1px solid rgba(20,184,166,0.2)", boxShadow: "0 0 0 4px rgba(20,184,166,0.05)" }}>
+                <Image
+                  src="/images/peter.jpg"
+                  alt="Peter Sudai"
+                  fill
+                  className="object-cover object-top"
+                  quality={100}
+                />
+              </div>
+
+              {/* Label + heading */}
+              <div className="pt-1">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-8 h-px" style={{ background: "var(--ac)" }}/>
+                  <span className="font-mono text-2xs" style={{ color: "var(--ac)", letterSpacing: "0.18em", textTransform: "uppercase" }}>About</span>
+                </div>
+                <h2 className="font-heading" style={{ fontSize: "clamp(1.6rem,3.2vw,2.4rem)", color: "var(--t1)", lineHeight: 1.2 }}>
+                  Good software starts<br/>with good questions
+                </h2>
+              </div>
             </div>
-            <h2 className="font-heading mb-10" style={{ fontSize: "clamp(2rem,4vw,2.75rem)", color: "var(--t1)" }}>
-              Good software starts<br/>with good questions
-            </h2>
 
             <div className="space-y-5 mb-10">
               {bio.map((text, i) => (

@@ -62,8 +62,25 @@ export function Services() {
   const v   = useInView(ref);
 
   return (
-    <section id="services" className="py-32 relative" style={{ background: "var(--s2)" }}>
+    <section id="services" className="py-32 relative overflow-hidden"
+             style={{
+               background: "var(--s2)",
+               backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+               backgroundSize: "48px 48px",
+             }}>
       <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.15),transparent)" }}/>
+
+      {/* Large faded watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden" aria-hidden>
+        <span className="font-mono font-black"
+              style={{ fontSize: "clamp(180px,28vw,340px)", color: "rgba(20,184,166,0.028)", lineHeight: 1, letterSpacing: "-0.05em" }}>
+          {"</>"}
+        </span>
+      </div>
+
+      {/* Radial glow anchored top-right */}
+      <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none"
+           style={{ background: "radial-gradient(ellipse, rgba(20,184,166,0.07) 0%, transparent 65%)" }} />
 
       <div className="max-w-6xl mx-auto px-6" ref={ref}>
 

@@ -35,11 +35,20 @@ export function Process() {
   }, [v]);
 
   return (
-    <section id="process" className="py-28 relative overflow-hidden" style={{ background: "var(--s2)" }}>
+    <section id="process" className="py-28 relative overflow-hidden"
+             style={{
+               background: "var(--s2)",
+               backgroundImage: "repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 32px)",
+             }}>
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.12),transparent)" }}/>
         <div className="absolute inset-x-0 bottom-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.1),transparent)" }}/>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full" style={{ background: "radial-gradient(ellipse,rgba(20,184,166,0.03) 0%,transparent 70%)" }}/>
+        {/* Central glow — larger and warmer than before */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
+             style={{ background: "radial-gradient(ellipse, rgba(20,184,166,0.05) 0%, transparent 65%)" }}/>
+        {/* Bottom-left accent */}
+        <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] rounded-full"
+             style={{ background: "radial-gradient(ellipse, rgba(20,184,166,0.04) 0%, transparent 70%)" }}/>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 relative z-10" ref={ref}>
@@ -57,7 +66,10 @@ export function Process() {
         </div>
 
         {/* Steps grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-14">
+        <div className="relative grid grid-cols-1 lg:grid-cols-5 gap-4 mb-14">
+          {/* Connector line — desktop only */}
+          <div className="absolute hidden lg:block top-[52px] left-[10%] right-[10%] h-px pointer-events-none"
+               style={{ background: "linear-gradient(90deg, transparent, rgba(20,184,166,0.18), rgba(20,184,166,0.18), rgba(20,184,166,0.18), transparent)" }} />
           {steps.map((s, i) => {
             const on = active === i;
             return (
