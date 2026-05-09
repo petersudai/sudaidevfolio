@@ -28,6 +28,12 @@ const SM_SCREENS = [
   { src: "/images/sarah-mitchell/booking.png", label: "Booking form" },
 ];
 
+const VM_SCREENS = [
+  { src: "/images/voltamobile/hero.png",     label: "Hero"          },
+  { src: "/images/voltamobile/featured.png", label: "Featured week" },
+  { src: "/images/voltamobile/catalog.png",  label: "All phones"    },
+];
+
 // Cycling across the main platform and two distinct client identities
 const CF_SCREENS = [
   { src: "/images/creative-folio/main.png",  label: "Platform home"             },
@@ -403,6 +409,23 @@ export function Work() {
             screens={CF_SCREENS}
             accent="#7c3aed"
             delay={250}
+            inView={inView}
+          />
+          <ProjectCard
+            title="VoltaMobile"
+            type="E-commerce · Phone retail"
+            url="https://voltamobile.vercel.app"
+            description="A full storefront built to pitch phone shop owners and general merchants on what an online presence can do for them. Filterable device catalog, a featured section for weekly highlights, WhatsApp-first checkout and battery-tested verification badges. Everything a Nairobi electronics shop needs to move stock online, under one roof."
+            features={[
+              "Filterable catalog by brand, condition and color",
+              "Featured section for weekly highlights",
+              "WhatsApp-first checkout flow",
+              "Battery-tested and Ex-UK condition badges",
+            ]}
+            tags={["Next.js", "Tailwind", "E-commerce", "WhatsApp API"]}
+            screens={VM_SCREENS}
+            accent="#3b82f6"
+            delay={350}
             inView={inView}
           />
         </div>
