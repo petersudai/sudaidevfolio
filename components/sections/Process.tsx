@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { CalendlyButton } from "@/components/CalendlyButton";
 
 function useInView(ref: React.RefObject<HTMLElement | null>) {
   const [v, setV] = useState(false);
@@ -117,16 +118,17 @@ export function Process() {
             <h3 className="font-heading mb-1" style={{ fontSize: "20px", color: "var(--t1)" }}>Ready to get started?</h3>
             <p style={{ fontSize: "14px", color: "var(--t3)" }}>Free 30-minute discovery call. No commitment, no pitch.</p>
           </div>
-          <a href="#contact"
-             className="group flex-shrink-0 flex items-center gap-2.5 px-6 py-3.5 rounded-full font-heading font-semibold text-sm transition-all duration-300"
-             style={{ background: "var(--ac)", color: "var(--s1)" }}
-             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background="#0d9488"; (e.currentTarget as HTMLElement).style.transform="translateY(-2px)"; (e.currentTarget as HTMLElement).style.boxShadow="0 8px 24px rgba(20,184,166,0.4)"; }}
-             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background="var(--ac)"; (e.currentTarget as HTMLElement).style.transform=""; (e.currentTarget as HTMLElement).style.boxShadow=""; }}>
+          <CalendlyButton
+            className="group flex-shrink-0 flex items-center gap-2.5 px-6 py-3.5 rounded-full font-heading font-semibold text-sm transition-all duration-300"
+            style={{ background: "var(--ac)", color: "var(--s1)" }}
+            onMouseEnter={e => { e.currentTarget.style.background="#0d9488"; e.currentTarget.style.transform="translateY(-2px)"; e.currentTarget.style.boxShadow="0 8px 24px rgba(20,184,166,0.4)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="var(--ac)"; e.currentTarget.style.transform=""; e.currentTarget.style.boxShadow=""; }}
+          >
             Book a free call
             <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </a>
+          </CalendlyButton>
         </div>
       </div>
     </section>

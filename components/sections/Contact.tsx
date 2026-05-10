@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { CalendlyButton } from "@/components/CalendlyButton";
 
 function useInView(ref: React.RefObject<HTMLElement | null>, threshold = 0.08) {
   const [v, setV] = useState(false);
@@ -185,16 +186,35 @@ export function Contact() {
               ))}
             </div>
 
-            {/* Free call callout */}
+            {/* Calendly booking card */}
             <div className="glass-teal rounded-2xl p-5">
-              <div className="flex items-center gap-2 mb-2">
-                <span style={{ fontSize: "15px" }}>💡</span>
-                <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--ac3)" }}>Free discovery call</span>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span style={{ fontSize: "15px" }}>📅</span>
+                <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--ac3)" }}>Free 30-min discovery call</span>
               </div>
-              <p style={{ fontSize: "13px", color: "var(--t3)", lineHeight: 1.65 }}>
-                30 minutes, no pitch, no commitment. Just an honest conversation about your
-                project and what it would take to build it right.
+              <p style={{ fontSize: "13px", color: "var(--t3)", lineHeight: 1.65, marginBottom: "1rem" }}>
+                No pitch, no commitment. Just an honest conversation about your project
+                and what it would take to build it right.
               </p>
+              <CalendlyButton
+                className="group flex items-center justify-center gap-2.5 w-full px-5 py-3 rounded-full font-heading font-semibold text-sm transition-all duration-300"
+                style={{ background: "var(--ac)", color: "var(--s1)" }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = "#0d9488";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(20,184,166,0.4)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "var(--ac)";
+                  e.currentTarget.style.transform = "";
+                  e.currentTarget.style.boxShadow = "";
+                }}
+              >
+                Book a free call
+                <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </CalendlyButton>
             </div>
           </div>
 
