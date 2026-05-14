@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://petersudai.dev"),
@@ -14,11 +15,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://petersudai.dev",
     siteName: "Peter Sudai",
+    images: [{ url: "https://petersudai.dev/og", width: 1200, height: 630, alt: "Peter Sudai — Fullstack Developer" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Peter Sudai — Fullstack Developer",
     description: "I build web apps, SaaS products, and backend systems that make businesses grow.",
+    images: ["https://petersudai.dev/og"],
   },
   robots: {
     index: true,
@@ -73,6 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased">
         {children}
+        <Analytics />
         <script
           src="https://assets.calendly.com/assets/external/widget.js"
           type="text/javascript"

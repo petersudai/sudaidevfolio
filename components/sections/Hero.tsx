@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { CalendlyButton } from "@/components/CalendlyButton";
 
 const STACK = ["Next.js","React","TypeScript","Python","Flask","Node.js","Supabase","PostgreSQL","MongoDB","Tailwind CSS","Express","REST APIs"];
 
@@ -8,17 +9,14 @@ const PHRASES = [
   "The problem stops here.",
   "Your biggest bottleneck deserves a real solution.",
   "Life's complicated enough. Your software shouldn't be.",
-  "From messy to seamless. From stuck to scaling.",
   "I build the solution you've been working around.",
   "Your work is good. Your website should say that.",
-  "Your brand deserves a home on the internet.",
-  "Look the part. Online, always.",
   "Real solutions. Built to last.",
 ];
 
-const TYPE_SPEED   = 45;   // ms per character while typing
-const DELETE_SPEED = 28;   // ms per character while deleting
-const PAUSE_AFTER  = 2000; // ms the full string stays visible before deletion
+const TYPE_SPEED   = 32;   // ms per character while typing
+const DELETE_SPEED = 14;   // ms per character while deleting
+const PAUSE_AFTER  = 1500; // ms the full string stays visible before deletion
 
 export function Hero() {
   const canvasRef  = useRef<HTMLCanvasElement>(null);
@@ -190,16 +188,16 @@ export function Hero() {
         {/* CTAs */}
         <div className={cn("flex flex-wrap items-center gap-4 mb-20", vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")}
              style={{ transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.45s" }}>
-          <a href="#contact"
-             className="group flex items-center gap-2.5 px-7 py-4 rounded-full font-heading font-semibold text-base bg-teal-500 hover:bg-teal-400 transition-all duration-300 hover:-translate-y-1"
-             style={{ color: "var(--s1)", boxShadow: "0 0 0 0 rgba(20,184,166,0)" }}
-             onMouseEnter={e => (e.currentTarget.style.boxShadow="0 12px 32px rgba(20,184,166,0.42)")}
-             onMouseLeave={e => (e.currentTarget.style.boxShadow="0 0 0 0 rgba(20,184,166,0)")}>
-            Start a project
+          <CalendlyButton
+            className="group flex items-center gap-2.5 px-7 py-4 rounded-full font-heading font-semibold text-base bg-teal-500 hover:bg-teal-400 transition-all duration-300 hover:-translate-y-1"
+            style={{ color: "var(--s1)", boxShadow: "0 0 0 0 rgba(20,184,166,0)" }}
+            onMouseEnter={e => (e.currentTarget.style.boxShadow="0 12px 32px rgba(20,184,166,0.42)")}
+            onMouseLeave={e => (e.currentTarget.style.boxShadow="0 0 0 0 rgba(20,184,166,0)")}>
+            Book a free call
             <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </a>
+          </CalendlyButton>
           <a href="#work"
              className="group flex items-center gap-2.5 px-7 py-4 rounded-full font-body font-medium text-sm glass hover:border-teal-500/25 transition-all duration-300 hover:-translate-y-0.5"
              style={{ color: "var(--t2)" }}>

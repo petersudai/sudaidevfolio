@@ -1,13 +1,12 @@
 "use client";
-import { Navbar }       from "@/components/layout/Navbar";
-import { Hero }         from "@/components/sections/Hero";
-import { Services }     from "@/components/sections/Services";
-import { Work }         from "@/components/sections/Work";
-import { Process }      from "@/components/sections/Process";
-import { About }        from "@/components/sections/About";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { Contact }      from "@/components/sections/Contact";
-import { Footer }       from "@/components/sections/Footer";
+import { Navbar }   from "@/components/layout/Navbar";
+import { Hero }     from "@/components/sections/Hero";
+import { Services } from "@/components/sections/Services";
+import { Work }     from "@/components/sections/Work";
+import { Process }  from "@/components/sections/Process";
+import { About }    from "@/components/sections/About";
+import { Contact }  from "@/components/sections/Contact";
+import { Footer }   from "@/components/sections/Footer";
 
 export default function Home() {
   return (
@@ -18,7 +17,6 @@ export default function Home() {
       <Work />
       <Process />
       <About />
-      <Testimonials />
       <Contact />
       <Footer />
     </main>

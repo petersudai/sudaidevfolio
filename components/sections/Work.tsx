@@ -45,12 +45,13 @@ const CF_SCREENS = [
 
 /* ─── Reusable project card — full-width horizontal layout ──── */
 function ProjectCard({
-  title, type, url, description, features, tags, screens, accent, delay, inView,
+  title, type, url, description, outcome, features, tags, screens, accent, delay, inView,
 }: {
   title: string;
   type: string;
   url: string;
   description: string;
+  outcome: string;
   features: string[];
   tags: string[];
   screens: { src: string; label: string }[];
@@ -145,10 +146,14 @@ function ProjectCard({
             <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: accent }}>
               {type}
             </span>
-            <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-3 transition-colors duration-300 group-hover:text-teal-300"
+            <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-2 transition-colors duration-300 group-hover:text-teal-300"
                 style={{ color: "#e8f0f5", lineHeight: 1.2 }}>
               {title}
             </h3>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: accent }} />
+              <span className="text-[11px] font-mono tracking-wide" style={{ color: accent, opacity: 0.85 }}>{outcome}</span>
+            </div>
             <p className="text-[13px] leading-relaxed mb-5 transition-colors duration-300 group-hover:text-[#7a9ab0]"
                style={{ color: "#4a6070" }}>
               {description}
@@ -311,10 +316,14 @@ export function Work() {
                 <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: "var(--ac)" }}>
                   Live SaaS · Event management
                 </span>
-                <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-3 transition-colors duration-300 group-hover:text-teal-300"
+                <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-2 transition-colors duration-300 group-hover:text-teal-300"
                     style={{ color: "#e8f0f5", lineHeight: 1.2 }}>
                   TicketForge
                 </h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "var(--ac)" }} />
+                  <span className="text-[11px] font-mono tracking-wide" style={{ color: "var(--ac)", opacity: 0.85 }}>Live across East Africa — real events, real revenue</span>
+                </div>
                 <p className="text-[13px] leading-relaxed mb-5 transition-colors duration-300 group-hover:text-[#7a9ab0]"
                    style={{ color: "#4a6070" }}>
                   A full-cycle event management SaaS serving organizers across East Africa.
@@ -381,6 +390,7 @@ export function Work() {
             title="Professional Consulting Website"
             type="Business website · Lead generation"
             url="https://sarahmitchellcorp.vercel.app"
+            outcome="Converts C-suite visitors into booked calls before they hit the form"
             description="Built for a business consultant targeting mid-market CEOs. Every section earns its place. Credibility-first hero with floating proof overlays, social validation built into the layout, and a booking form designed to qualify leads before the first call is ever made."
             features={[
               "Conversion-first layout",
@@ -398,6 +408,7 @@ export function Work() {
             title="Creative Portfolio Platform"
             type="Productized service · Creatives"
             url="https://sudaicreativefolio.vercel.app"
+            outcome="One codebase, infinite client identities — shipped in days not months"
             description="One platform, any creative identity. Built for DJs, photographers and visual artists who want a site that actually represents their work. Custom audio player with waveform visualisation, masonry gallery with lightbox, booking tiers and a design language that adapts completely per client."
             features={[
               "Custom audio player + waveforms",
@@ -415,6 +426,7 @@ export function Work() {
             title="VoltaMobile"
             type="E-commerce · Phone retail"
             url="https://voltamobile.vercel.app"
+            outcome="Takes Nairobi phone shops online — no developer dependency after handoff"
             description="A full storefront built to pitch phone shop owners and general merchants on what an online presence can do for them. Filterable device catalog, a featured section for weekly highlights, WhatsApp-first checkout and battery-tested verification badges. Everything a Nairobi electronics shop needs to move stock online, under one roof."
             features={[
               "Filterable catalog by brand, condition and color",
