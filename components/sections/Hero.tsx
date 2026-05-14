@@ -4,22 +4,65 @@ import { cn } from "@/lib/utils";
 
 const STACK = ["Next.js","React","TypeScript","Python","Flask","Node.js","Supabase","PostgreSQL","MongoDB","Tailwind CSS","Express","REST APIs"];
 
+const PHRASES = [
+  "The problem stops here.",
+  "Your biggest bottleneck deserves a real solution.",
+  "Life's complicated enough. Your software shouldn't be.",
+  "From messy to seamless. From stuck to scaling.",
+  "I build the solution you've been working around.",
+  "Your work is good. Your website should say that.",
+  "Your brand deserves a home on the internet.",
+  "Look the part. Online, always.",
+  "Real solutions. Built to last.",
+];
+
+const TYPE_SPEED   = 45;   // ms per character while typing
+const DELETE_SPEED = 28;   // ms per character while deleting
+const PAUSE_AFTER  = 2000; // ms the full string stays visible before deletion
+
 export function Hero() {
   const canvasRef  = useRef<HTMLCanvasElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const mouse      = useRef({ x: -500, y: -500 });
-  const [vis,   setVis]   = useState(false);
-  const [typed, setTyped] = useState("");
-  const full = "I build software that";
+  const [vis,        setVis]        = useState(false);
+  const [typed,      setTyped]      = useState("");
+  const [phraseIdx,  setPhraseIdx]  = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDone,     setIsDone]     = useState(false);
 
   useEffect(() => { const t = setTimeout(() => setVis(true), 80); return () => clearTimeout(t); }, []);
 
+  // Cycling typewriter — stops permanently after the final phrase is fully typed
   useEffect(() => {
-    if (!vis) return;
-    let i = 0;
-    const iv = setInterval(() => { setTyped(full.slice(0, ++i)); if (i >= full.length) clearInterval(iv); }, 40);
-    return () => clearInterval(iv);
-  }, [vis]);
+    if (!vis || isDone) return;
+
+    const phrase = PHRASES[phraseIdx];
+    const isLast = phraseIdx === PHRASES.length - 1;
+
+    if (!isDeleting) {
+      if (typed.length < phrase.length) {
+        // Still typing forward
+        const t = setTimeout(() => setTyped(phrase.slice(0, typed.length + 1)), TYPE_SPEED);
+        return () => clearTimeout(t);
+      } else {
+        // Fully typed
+        if (isLast) { setIsDone(true); return; }
+        // Pause then begin deletion
+        const t = setTimeout(() => setIsDeleting(true), PAUSE_AFTER);
+        return () => clearTimeout(t);
+      }
+    } else {
+      if (typed.length > 0) {
+        // Still deleting
+        const t = setTimeout(() => setTyped(typed.slice(0, -1)), DELETE_SPEED);
+        return () => clearTimeout(t);
+      } else {
+        // Deletion complete — advance to next phrase
+        setIsDeleting(false);
+        setPhraseIdx(i => i + 1);
+      }
+    }
+  }, [vis, typed, phraseIdx, isDeleting, isDone]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -129,12 +172,11 @@ export function Hero() {
         <div className={cn(vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}
              style={{ transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s" }}>
           <h1 className="font-heading font-extrabold mb-6"
-              style={{ fontSize: "clamp(3rem,7.5vw,6rem)", lineHeight: 1.04, letterSpacing: "-0.035em", color: "var(--t1)" }}>
+              style={{ fontSize: "clamp(3rem,7.5vw,6rem)", lineHeight: 1.1, letterSpacing: "-0.035em", color: "var(--t1)" }}>
             <span className="block">
               {typed}
               <span className="inline-block w-[3px] h-[0.85em] ml-1 rounded-sm align-middle animate-live-pulse" style={{ background: "var(--ac)" }}/>
             </span>
-            <span className="block text-gradient-teal">makes businesses grow.</span>
           </h1>
         </div>
 
