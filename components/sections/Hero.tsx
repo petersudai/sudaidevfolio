@@ -171,9 +171,10 @@ export function Hero() {
              style={{ transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s" }}>
           <h1 className="font-heading font-extrabold mb-6"
               style={{ fontSize: "clamp(3rem,7.5vw,6rem)", lineHeight: 1.1, letterSpacing: "-0.035em", color: "var(--t1)" }}>
-            <span className="block">
+            {/* min-height reserves 3 lines so nothing below ever jumps when line count changes */}
+            <span className="block" style={{ minHeight: "clamp(9.9rem,24.75vw,19.8rem)" }}>
               {typed}
-              <span className="inline-block w-[3px] h-[0.85em] ml-1 rounded-sm align-middle animate-live-pulse" style={{ background: "var(--ac)" }}/>
+              <span className="inline-block w-[3px] h-[0.85em] ml-1 rounded-sm align-middle animate-cursor-blink" style={{ background: "var(--ac)" }}/>
             </span>
           </h1>
         </div>

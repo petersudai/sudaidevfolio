@@ -187,17 +187,22 @@
   }
 
   /* ── Core animations ───────────────────────────────────────────── */
-  .animate-live-pulse  { animation: livePulse 2s ease-in-out infinite; }
-  .animate-spin-slow   { animation: spin 1.2s linear infinite; }
-  .animate-float       { animation: float 5s ease-in-out infinite; }
-  .animate-fade-up     { animation: fadeUp 0.65s cubic-bezier(0.16,1,0.3,1) both; }
-  .animate-scale-in    { animation: scaleIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-  .animate-shimmer     { animation: shimmer 2.4s linear infinite; }
-  .animate-glow-pulse  { animation: glowPulse 3s ease-in-out infinite; }
+  .animate-live-pulse   { animation: livePulse 2s ease-in-out infinite; }
+  .animate-cursor-blink { animation: cursorBlink 1.1s steps(1) infinite; }
+  .animate-spin-slow    { animation: spin 1.2s linear infinite; }
+  .animate-float        { animation: float 5s ease-in-out infinite; }
+  .animate-fade-up      { animation: fadeUp 0.65s cubic-bezier(0.16,1,0.3,1) both; }
+  .animate-scale-in     { animation: scaleIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+  .animate-shimmer      { animation: shimmer 2.4s linear infinite; }
+  .animate-glow-pulse   { animation: glowPulse 3s ease-in-out infinite; }
 
   @keyframes livePulse {
     0%,100% { opacity: 1; }
     50%     { opacity: 0.25; }
+  }
+  /* Clean binary blink — fully visible then fully gone, no strobing */
+  @keyframes cursorBlink {
+    50% { opacity: 0; }
   }
   @keyframes spin {
     to { transform: rotate(360deg); }
