@@ -81,9 +81,9 @@ export async function GET() {
           <div style={{ display: "flex", gap: "48px" }}>
             {[
               { val: "3+",  label: "Years" },
-              { val: "12+", label: "Products shipped" },
-              { val: "4",   label: "Industries" },
-              { val: "24h", label: "Response time" },
+              { val: "12h", label: "Response time" },
+              { val: "100%", label: "On-time" },
+              { val: "E2E", label: "Ownership" },
             ].map(s => (
               <div key={s.label} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                 <span style={{ fontSize: "28px", fontWeight: 700, color: "#f0f6ff", lineHeight: 1 }}>{s.val}</span>

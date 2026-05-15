@@ -16,9 +16,9 @@ const PHRASES = [
 
 const TAGLINE = "Simplify, scale, and transform.";
 
-const TYPE_SPEED   = 32;   // ms per character while typing
-const DELETE_SPEED = 14;   // ms per character while deleting
-const PAUSE_AFTER  = 1500; // ms the full string stays visible before deletion
+const TYPE_SPEED   = 48;   // ms per character while typing
+const DELETE_SPEED = 20;   // ms per character while deleting
+const PAUSE_AFTER  = 2000; // ms the full string stays visible before deletion
 
 export function Hero() {
   const canvasRef  = useRef<HTMLCanvasElement>(null);
@@ -187,13 +187,13 @@ export function Hero() {
         <div className={cn(vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}
              style={{ transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s" }}>
           <h1 className="font-heading font-extrabold mb-6"
-              style={{ fontSize: "clamp(3rem,7.5vw,6rem)", lineHeight: 1.1, letterSpacing: "-0.035em", color: "var(--t1)" }}>
+              style={{ fontSize: "clamp(1.75rem,6vw,6rem)", lineHeight: 1.1, letterSpacing: "-0.035em", color: "var(--t1)" }}>
             {/*
               minHeight pre-reserves 4 lines so the section never grows when the
-              teal tagline appears — 4 × lineHeight(1.1) × font-size:
-              min: 4×1.1×3rem=13.2rem  |  mid: 4×1.1×7.5vw=33vw  |  max: 4×1.1×6rem=26.4rem
+              teal tagline appears — 4 × lineHeight(1.1) × font-size-clamp:
+              min: 4×1.1×1.75rem=7.7rem  |  mid: 4×1.1×6vw=26.4vw  |  max: 4×1.1×6rem=26.4rem
             */}
-            <span className="block" style={{ minHeight: "clamp(13.2rem,33vw,26.4rem)" }}>
+            <span className="block" style={{ minHeight: "clamp(7.7rem,26.4vw,26.4rem)" }}>
 
               {/* White phrase line — cursor here until tagline phase begins */}
               <span className="block">
@@ -271,18 +271,36 @@ export function Hero() {
           </a>
         </div>
 
-        {/* Stats */}
-        <div className={cn("flex flex-wrap gap-x-10 gap-y-6 pt-10 border-t", vis ? "opacity-100" : "opacity-0")}
+        {/* Stats — 4-column grid for equal spacing; 2-col on mobile */}
+        <div className={cn("grid grid-cols-2 sm:grid-cols-4 pt-10 border-t", vis ? "opacity-100" : "opacity-0")}
              style={{ borderColor: "rgba(20,184,166,0.1)", transition: "opacity 0.8s ease 0.6s" }}>
           {[
-            { val: "3+",   label: "Years",            sub: "shipping production software" },
-            { val: "12+",  label: "Products shipped",  sub: "live in production"           },
-            { val: "4",    label: "Industries",        sub: "events · finance · logistics · real estate" },
-            { val: "24h",  label: "Response time",     sub: "guaranteed"                   },
+            { val: "3+",         label: "Years",           sub: "shipping production software" },
+            { val: "12h",        label: "Response time",    sub: "guaranteed"                   },
+            { val: "100%",       label: "On-time",          sub: "projects delivered on deadline" },
+            { val: "End-to-end", label: "Ownership",        sub: "design to deployment"         },
           ].map((s, i) => (
-            <div key={s.label} className="flex flex-col gap-0.5 group" style={{ animationDelay: `${0.65 + i*0.07}s` }}>
-              <span className="font-heading font-bold transition-colors duration-300 group-hover:text-teal-300"
-                    style={{ fontSize: "2rem", lineHeight: 1, color: "var(--t1)" }}>{s.val}</span>
+            <div key={s.label}
+                 className={cn(
+                   "flex flex-col gap-1 group py-4 pr-4",
+                   // Left border divider on all but first — desktop only
+                   i > 0 ? "sm:border-l sm:pl-8" : "sm:pl-0",
+                   // Mobile: bottom border on first row items
+                   i < 2 ? "border-b sm:border-b-0 pb-6 sm:pb-4" : "pt-6 sm:pt-4",
+                 )}
+                 style={{ borderColor: "rgba(20,184,166,0.08)" }}>
+              {/* Fixed-height value row keeps all four cells vertically aligned */}
+              <div style={{ height: "2.4rem", display: "flex", alignItems: "center" }}>
+                <span className="font-heading font-bold transition-colors duration-300 group-hover:text-teal-300"
+                      style={{
+                        fontSize: s.val.length > 4 ? "1.3rem" : "2rem",
+                        lineHeight: 1,
+                        color: "var(--t1)",
+                        whiteSpace: "nowrap",
+                      }}>
+                  {s.val}
+                </span>
+              </div>
               <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--t2)", lineHeight: 1.4 }}>{s.label}</span>
               <span style={{ fontSize: "11px", color: "var(--t3)", lineHeight: 1.4 }}>{s.sub}</span>
             </div>
