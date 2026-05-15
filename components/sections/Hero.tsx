@@ -10,9 +10,11 @@ const PHRASES = [
   "Your biggest bottleneck deserves a real solution.",
   "Life's complicated enough. Your software shouldn't be.",
   "I build the solution you've been working around.",
-  "Your work is good. Your website should say that.",
+  "Your work is great. Your website should show that.",
   "Real solutions. Built to last.",
 ];
+
+const TAGLINE = "Simplify, scale, and transform.";
 
 const TYPE_SPEED   = 32;   // ms per character while typing
 const DELETE_SPEED = 14;   // ms per character while deleting
@@ -22,45 +24,58 @@ export function Hero() {
   const canvasRef  = useRef<HTMLCanvasElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const mouse      = useRef({ x: -500, y: -500 });
-  const [vis,        setVis]        = useState(false);
-  const [typed,      setTyped]      = useState("");
-  const [phraseIdx,  setPhraseIdx]  = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isDone,     setIsDone]     = useState(false);
+  const [vis,             setVis]             = useState(false);
+  const [typed,           setTyped]           = useState("");
+  const [phraseIdx,       setPhraseIdx]       = useState(0);
+  const [isDeleting,      setIsDeleting]      = useState(false);
+  const [isTypingTagline, setIsTypingTagline] = useState(false);
+  const [typedTagline,    setTypedTagline]    = useState("");
+  const [isDone,          setIsDone]          = useState(false);
 
   useEffect(() => { const t = setTimeout(() => setVis(true), 80); return () => clearTimeout(t); }, []);
 
-  // Cycling typewriter — stops permanently after the final phrase is fully typed
+  // Cycling typewriter — after the final phrase, types the teal tagline then stops
   useEffect(() => {
     if (!vis || isDone) return;
 
+    // ── Tagline phase ────────────────────────────────────────────────
+    if (isTypingTagline) {
+      if (typedTagline.length < TAGLINE.length) {
+        const t = setTimeout(() => setTypedTagline(TAGLINE.slice(0, typedTagline.length + 1)), TYPE_SPEED);
+        return () => clearTimeout(t);
+      } else {
+        setIsDone(true);
+      }
+      return;
+    }
+
+    // ── Phrase phase ─────────────────────────────────────────────────
     const phrase = PHRASES[phraseIdx];
     const isLast = phraseIdx === PHRASES.length - 1;
 
     if (!isDeleting) {
       if (typed.length < phrase.length) {
-        // Still typing forward
         const t = setTimeout(() => setTyped(phrase.slice(0, typed.length + 1)), TYPE_SPEED);
         return () => clearTimeout(t);
       } else {
-        // Fully typed
-        if (isLast) { setIsDone(true); return; }
-        // Pause then begin deletion
+        if (isLast) {
+          // Pause, then start typing the tagline on the next line
+          const t = setTimeout(() => setIsTypingTagline(true), PAUSE_AFTER);
+          return () => clearTimeout(t);
+        }
         const t = setTimeout(() => setIsDeleting(true), PAUSE_AFTER);
         return () => clearTimeout(t);
       }
     } else {
       if (typed.length > 0) {
-        // Still deleting
         const t = setTimeout(() => setTyped(typed.slice(0, -1)), DELETE_SPEED);
         return () => clearTimeout(t);
       } else {
-        // Deletion complete — advance to next phrase
         setIsDeleting(false);
         setPhraseIdx(i => i + 1);
       }
     }
-  }, [vis, typed, phraseIdx, isDeleting, isDone]);
+  }, [vis, typed, phraseIdx, isDeleting, isTypingTagline, typedTagline, isDone]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -77,7 +92,7 @@ export function Hero() {
     const pts: P[] = Array.from({ length: 70 }, () => ({
       x: Math.random() * canvas.width, y: Math.random() * canvas.height,
       vx: (Math.random() - 0.5) * 0.22, vy: (Math.random() - 0.5) * 0.22,
-      r: Math.random() * 1.2 + 0.3, a: Math.random() * 0.3 + 0.07, ph: Math.random() * Math.PI * 2,
+      r: Math.random() * 1.8 + 0.6, a: Math.random() * 0.5 + 0.15, ph: Math.random() * Math.PI * 2,
     }));
 
     let raf: number;
@@ -113,7 +128,6 @@ export function Hero() {
       raf = requestAnimationFrame(draw);
     };
 
-    // Stop animation when section scrolls out of view (saves battery + CPU)
     const io = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         if (!running) { running = true; raf = requestAnimationFrame(draw); }
@@ -139,18 +153,21 @@ export function Hero() {
     };
   }, []);
 
+  // Whether the tagline line is showing (being typed or fully done)
+  const showTagline = isTypingTagline || isDone;
+
   return (
     <section ref={sectionRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden" style={{ background: "var(--s1)" }}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-60" />
 
-      {/* Layered bg */}
+      {/* Layered bg — viewport-anchored positions so they never shift with content */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0" style={{
           backgroundImage: "linear-gradient(rgba(20,184,166,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(20,184,166,0.025) 1px,transparent 1px)",
           backgroundSize: "64px 64px",
         }}/>
-        <div className="absolute top-1/3 right-1/4 w-[480px] h-[480px] rounded-full" style={{ background: "radial-gradient(ellipse,rgba(20,184,166,0.07) 0%,transparent 70%)" }}/>
-        <div className="absolute bottom-1/3 left-1/5 w-[320px] h-[320px] rounded-full" style={{ background: "radial-gradient(ellipse,rgba(20,184,166,0.04) 0%,transparent 70%)" }}/>
+        <div className="absolute w-[480px] h-[480px] rounded-full" style={{ top: "30vh", right: "20vw", background: "radial-gradient(ellipse,rgba(20,184,166,0.07) 0%,transparent 70%)" }}/>
+        <div className="absolute w-[320px] h-[320px] rounded-full" style={{ bottom: "28vh", left: "12vw", background: "radial-gradient(ellipse,rgba(20,184,166,0.04) 0%,transparent 70%)" }}/>
         <div className="absolute bottom-16 inset-x-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.12),transparent)" }}/>
       </div>
 
@@ -171,10 +188,55 @@ export function Hero() {
              style={{ transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s" }}>
           <h1 className="font-heading font-extrabold mb-6"
               style={{ fontSize: "clamp(3rem,7.5vw,6rem)", lineHeight: 1.1, letterSpacing: "-0.035em", color: "var(--t1)" }}>
-            {/* min-height reserves 3 lines so nothing below ever jumps when line count changes */}
-            <span className="block" style={{ minHeight: "clamp(9.9rem,24.75vw,19.8rem)" }}>
-              {typed}
-              <span className="inline-block w-[3px] h-[0.85em] ml-1 rounded-sm align-middle animate-cursor-blink" style={{ background: "var(--ac)" }}/>
+            {/*
+              minHeight pre-reserves 4 lines so the section never grows when the
+              teal tagline appears — 4 × lineHeight(1.1) × font-size:
+              min: 4×1.1×3rem=13.2rem  |  mid: 4×1.1×7.5vw=33vw  |  max: 4×1.1×6rem=26.4rem
+            */}
+            <span className="block" style={{ minHeight: "clamp(13.2rem,33vw,26.4rem)" }}>
+
+              {/* White phrase line — cursor here until tagline phase begins */}
+              <span className="block">
+                {typed}
+                {!showTagline && (
+                  <span className="inline-block w-[3px] h-[0.85em] ml-1 rounded-sm align-middle animate-cursor-blink"
+                        style={{ background: "var(--ac)" }}/>
+                )}
+              </span>
+
+              {/* Teal tagline — typewritten on a new line, cursor moves here */}
+              {showTagline && (
+                <span className="block" style={{ color: "var(--ac3)" }}>
+                  {isDone ? (
+                    // Once fully typed: "transform" sweeps gold left→right on a 3s loop
+                    <>
+                      {"Simplify, scale, and "}
+                      <span style={{
+                        background: "linear-gradient(90deg, var(--ac3) 0%, var(--ac3) 20%, var(--go2) 50%, var(--ac3) 80%, var(--ac3) 100%)",
+                        backgroundSize: "200% auto",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                        animation: "shimmerLTR 3s ease-in-out infinite",
+                        display: "inline",
+                      }}>transform</span>
+                      {"."}
+                    </>
+                  ) : (
+                    // While typing: plain teal
+                    typedTagline
+                  )}
+                  {/* Resting cursor — slows to 3s to breathe with the shimmer once done */}
+                  <span className="inline-block w-[3px] h-[0.85em] ml-1 rounded-sm align-middle"
+                        style={{
+                          background: "var(--ac3)",
+                          animation: isDone
+                            ? "cursorBlink 3s steps(1) infinite"
+                            : "cursorBlink 1.1s steps(1) infinite",
+                        }}/>
+                </span>
+              )}
+
             </span>
           </h1>
         </div>

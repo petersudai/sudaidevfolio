@@ -13,99 +13,89 @@ export async function GET() {
           flexDirection: "column",
           justifyContent: "space-between",
           background: "#070f18",
-          padding: "72px 80px",
+          padding: "64px 80px",
           fontFamily: "system-ui, sans-serif",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        {/* Grid background */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(rgba(20,184,166,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20,184,166,0.04) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
+        {/* Grid */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "linear-gradient(rgba(20,184,166,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20,184,166,0.04) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}/>
 
-        {/* Top glow */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-100px",
-            right: "-100px",
-            width: "500px",
-            height: "500px",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(20,184,166,0.18) 0%, transparent 65%)",
-          }}
-        />
+        {/* Top-right glow */}
+        <div style={{
+          position: "absolute", top: "-80px", right: "-80px",
+          width: "480px", height: "480px", borderRadius: "50%",
+          background: "radial-gradient(ellipse, rgba(20,184,166,0.15) 0%, transparent 65%)",
+        }}/>
 
-        {/* Bottom glow */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-80px",
-            left: "-80px",
-            width: "400px",
-            height: "400px",
-            borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(20,184,166,0.1) 0%, transparent 70%)",
-          }}
-        />
+        {/* Bottom-left glow */}
+        <div style={{
+          position: "absolute", bottom: "-60px", left: "-60px",
+          width: "360px", height: "360px", borderRadius: "50%",
+          background: "radial-gradient(ellipse, rgba(20,184,166,0.08) 0%, transparent 70%)",
+        }}/>
 
-        {/* Content */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0px", position: "relative", zIndex: 1 }}>
-          {/* Availability pill */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              background: "rgba(20,184,166,0.1)",
-              border: "1px solid rgba(20,184,166,0.2)",
-              borderRadius: "100px",
-              padding: "8px 18px",
-              width: "fit-content",
-              marginBottom: "40px",
-            }}
-          >
-            <div
-              style={{
-                width: "8px",
-                height: "8px",
-                borderRadius: "50%",
-                background: "#14b8a6",
-              }}
-            />
-            <span style={{ color: "#5eead4", fontSize: "16px", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+        {/* Top row — availability pill + domain */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative", zIndex: 1 }}>
+          <div style={{
+            display: "flex", alignItems: "center", gap: "10px",
+            background: "rgba(20,184,166,0.1)", border: "1px solid rgba(20,184,166,0.2)",
+            borderRadius: "100px", padding: "8px 18px",
+          }}>
+            <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#14b8a6" }}/>
+            <span style={{ color: "#5eead4", fontSize: "15px", letterSpacing: "0.1em", textTransform: "uppercase" }}>
               Available for new projects
             </span>
           </div>
+          <span style={{ color: "#14b8a6", fontSize: "18px", fontWeight: 600, letterSpacing: "0.02em" }}>
+            petersudai.dev
+          </span>
+        </div>
 
+        {/* Centre — name + headline + tagline */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0px", position: "relative", zIndex: 1 }}>
           {/* Name */}
-          <div style={{ fontSize: "82px", fontWeight: 800, color: "#e8f0f5", lineHeight: 1, letterSpacing: "-0.03em", marginBottom: "16px" }}>
-            Peter Sudai
+          <div style={{ fontSize: "22px", fontWeight: 500, color: "#6a8fa8", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "20px" }}>
+            Peter Sudai · Fullstack Developer
           </div>
 
-          {/* Title */}
-          <div style={{ fontSize: "34px", color: "#14b8a6", fontWeight: 600, letterSpacing: "-0.01em" }}>
-            Fullstack Developer
+          {/* Final typewriter phrase */}
+          <div style={{ fontSize: "72px", fontWeight: 800, color: "#f0f6ff", lineHeight: 1.05, letterSpacing: "-0.035em", marginBottom: "12px" }}>
+            Real solutions.{"\n"}Built to last.
+          </div>
+
+          {/* Teal tagline */}
+          <div style={{ fontSize: "52px", fontWeight: 800, color: "#5eead4", lineHeight: 1.05, letterSpacing: "-0.03em" }}>
+            Simplify, scale, and transform.
           </div>
         </div>
 
-        {/* Bottom row */}
+        {/* Bottom row — stats + location */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: "20px", color: "#4a6070", maxWidth: "580px", lineHeight: 1.6 }}>
-            Web apps, SaaS products and business tools for founders, businesses and creatives.
+          {/* Stats */}
+          <div style={{ display: "flex", gap: "48px" }}>
+            {[
+              { val: "3+",  label: "Years" },
+              { val: "12+", label: "Products shipped" },
+              { val: "4",   label: "Industries" },
+              { val: "24h", label: "Response time" },
+            ].map(s => (
+              <div key={s.label} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                <span style={{ fontSize: "28px", fontWeight: 700, color: "#f0f6ff", lineHeight: 1 }}>{s.val}</span>
+                <span style={{ fontSize: "13px", color: "#6a8fa8", lineHeight: 1.4 }}>{s.label}</span>
+              </div>
+            ))}
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
-            <div style={{ fontSize: "16px", color: "#2a4a60", letterSpacing: "0.05em" }}>Nairobi, Kenya · Remote worldwide</div>
-            <div style={{ fontSize: "18px", color: "#14b8a6", fontWeight: 600, letterSpacing: "0.02em" }}>petersudai.dev</div>
-          </div>
+          {/* Location */}
+          <span style={{ fontSize: "15px", color: "#3a5a70", letterSpacing: "0.04em" }}>
+            Nairobi, Kenya · Remote worldwide
+          </span>
         </div>
       </div>
     ),
