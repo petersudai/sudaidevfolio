@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "#services", label: "Services" },
   { href: "#work",     label: "Work"     },
+  { href: "#services", label: "Services" },
   { href: "#about",    label: "About"    },
   { href: "#process",  label: "Process"  },
 ];
@@ -17,7 +17,7 @@ export function Navbar() {
   useEffect(() => {
     const fn = () => {
       setScrolled(window.scrollY > 40);
-      const ids = ["contact","process","about","work","services"];
+      const ids = ["contact","process","about","services","work"];
       for (const id of ids) {
         const el = document.getElementById(id);
         if (el && window.scrollY >= el.offsetTop - 100) { setActive(id); break; }

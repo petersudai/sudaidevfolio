@@ -69,6 +69,26 @@
 
   a { text-decoration: none; color: inherit; }
 
+  /* Restore focus rings for keyboard navigation (removed by reset) */
+  :focus-visible {
+    outline: 2px solid var(--ac);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Pointer cursor on all interactive elements */
+  button, [role="button"], a { cursor: pointer; }
+
+  /* Respect reduced-motion preference — disable all decorative animations */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    html { scroll-behavior: auto; }
+  }
+
   ::selection { background: rgba(20,184,166,0.28); color: #f0f6ff; }
 
   ::-webkit-scrollbar { width: 3px; }
