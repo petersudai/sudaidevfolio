@@ -34,6 +34,21 @@ const VM_SCREENS = [
   { src: "/images/voltamobile/catalog.png",  label: "All phones"    },
 ];
 
+const AURA_SCREENS = [
+  { src: "/images/aura-residences/hero.png",       label: "Landing"         },
+  { src: "/images/aura-residences/residences.png", label: "Residences"      },
+  { src: "/images/aura-residences/amenities.png",  label: "Amenities"       },
+  { src: "/images/aura-residences/viewing.png",    label: "Private viewing" },
+  { src: "/images/aura-residences/location.png",   label: "Location"        },
+];
+
+const MW_SCREENS = [
+  { src: "/images/mawimbi/hero.png",     label: "Hero"     },
+  { src: "/images/mawimbi/product.png",  label: "Product"  },
+  { src: "/images/mawimbi/flavours.png", label: "Flavours" },
+  { src: "/images/mawimbi/waitlist.png", label: "Waitlist" },
+];
+
 // Cycling across the main platform and two distinct client identities
 const CF_SCREENS = [
   { src: "/images/creative-folio/main.png",  label: "Platform home"             },
@@ -218,7 +233,7 @@ export function Work() {
   const [activeScreen, setActiveScreen] = useState(0);
 
   useEffect(() => {
-    const iv = setInterval(() => setActiveScreen(s => (s + 1) % TF_SCREENS.length), 3500);
+    const iv = setInterval(() => setActiveScreen(s => (s + 1) % MW_SCREENS.length), 3500);
     return () => clearInterval(iv);
   }, []);
 
@@ -243,47 +258,47 @@ export function Work() {
           </p>
         </div>
 
-        {/* ── TicketForge — Flagship ──────────────────────────── */}
+        {/* ── Mawimbi — Flagship ─────────────────────────────── */}
         <div className={cn(
-          "group rounded-3xl overflow-hidden border border-teal-500/[0.1] transition-all duration-700 mb-5",
-          "hover:border-teal-500/[0.2] hover:shadow-[0_24px_80px_rgba(20,184,166,0.07)]",
+          "group rounded-3xl overflow-hidden border transition-all duration-700 mb-5",
+          "hover:shadow-[0_24px_80px_rgba(34,211,238,0.07)]",
           inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        )} style={{ background: "var(--s3)" }}>
+        )} style={{ background: "var(--s3)", borderColor: "rgba(34,211,238,0.12)" }}>
 
           {/* Flagship banner */}
-          <div className="flex items-center justify-between px-8 py-4 border-b border-teal-500/[0.08]"
-               style={{ background: "rgba(20,184,166,0.04)" }}>
+          <div className="flex items-center justify-between px-8 py-4 border-b"
+               style={{ background: "rgba(34,211,238,0.04)", borderColor: "rgba(34,211,238,0.08)" }}>
             <div className="flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-teal-400 animate-live-pulse" />
+              <span className="w-2 h-2 rounded-full animate-live-pulse" style={{ background: "#22d3ee" }} />
               <span className="text-[11px] font-semibold uppercase tracking-[0.14em]"
                     style={{
-                      background: "linear-gradient(90deg, var(--ac3), var(--ac), var(--ac3))",
+                      background: "linear-gradient(90deg, #67e8f9, #22d3ee, #67e8f9)",
                       backgroundSize: "200% auto",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
                       animation: "shimmer 2.4s linear infinite",
                     }}>
-                Live SaaS Product
+                Consumer Brand · Diani, Kenya
               </span>
             </div>
             <div className="flex items-center gap-2 text-[11px] font-mono" style={{ color: "#4d6f88" }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-500/40" />
-              ticketforge.vercel.app
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "rgba(34,211,238,0.4)" }} />
+              mawimbi-diani.vercel.app
             </div>
           </div>
 
           <div className="grid lg:grid-cols-[1fr_380px]">
             {/* Screenshots */}
-            <div className="relative min-h-[300px] lg:min-h-[400px] overflow-hidden border-b lg:border-b-0 lg:border-r border-teal-500/[0.07]"
-                 style={{ background: "#03080e" }}>
-              {TF_SCREENS.map((s, i) => (
+            <div className="relative min-h-[300px] lg:min-h-[400px] overflow-hidden border-b lg:border-b-0 lg:border-r"
+                 style={{ background: "#03080e", borderColor: "rgba(34,211,238,0.07)" }}>
+              {MW_SCREENS.map((s, i) => (
                 <div key={s.src}
                      className="absolute inset-0 flex items-center justify-center p-4 transition-opacity duration-700"
                      style={{ opacity: activeScreen === i ? 1 : 0 }}>
                   <Image
                     src={s.src}
-                    alt={`TicketForge — ${s.label}`}
+                    alt={`Mawimbi — ${s.label}`}
                     fill
                     className="object-contain"
                     sizes="(max-width: 1024px) 100vw, 55vw"
@@ -293,19 +308,19 @@ export function Work() {
                 </div>
               ))}
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-                {TF_SCREENS.map((s, i) => (
+                {MW_SCREENS.map((s, i) => (
                   <button key={s.src} onClick={() => setActiveScreen(i)} aria-label={s.label}
                           style={{
                             width: activeScreen === i ? "24px" : "6px", height: "6px",
                             borderRadius: "3px", transition: "all 0.3s",
-                            background: activeScreen === i ? "var(--ac)" : "rgba(255,255,255,0.2)",
+                            background: activeScreen === i ? "#22d3ee" : "rgba(255,255,255,0.2)",
                           }} />
                 ))}
               </div>
               <div className="absolute bottom-5 right-5 z-20">
                 <span className="text-[10px] font-mono px-2.5 py-1 rounded-full"
                       style={{ background: "rgba(3,8,14,0.8)", border: "1px solid rgba(255,255,255,0.07)", color: "#4d6f88" }}>
-                  {TF_SCREENS[activeScreen].label}
+                  {MW_SCREENS[activeScreen].label}
                 </span>
               </div>
             </div>
@@ -313,68 +328,67 @@ export function Work() {
             {/* Details */}
             <div className="p-8 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: "var(--ac)" }}>
-                  Live SaaS · Event management
+                <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: "#22d3ee" }}>
+                  Brand website · Consumer product
                 </span>
-                <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-2 transition-colors duration-300 group-hover:text-teal-300"
+                <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-2 transition-colors duration-300"
                     style={{ color: "#e8f0f5", lineHeight: 1.2 }}>
-                  TicketForge
+                  Mawimbi Energy
                 </h3>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "var(--ac)" }} />
-                  <span className="text-[11px] font-mono tracking-wide" style={{ color: "var(--ac)", opacity: 0.85 }}>Live across East Africa — real events, real revenue</span>
+                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#22d3ee" }} />
+                  <span className="text-[11px] font-mono tracking-wide" style={{ color: "#22d3ee", opacity: 0.85 }}>
+                    A Kenyan coastal brand launched online before hitting a single shelf
+                  </span>
                 </div>
                 <p className="text-[13px] leading-relaxed mb-5 transition-colors duration-300 group-hover:text-[#7a9ab0]"
                    style={{ color: "#4a6070" }}>
-                  A full-cycle event management SaaS serving organizers across East Africa.
-                  M-Pesa native payments, QR-based entry validation, real-time attendee dashboards
-                  and tiered ticketing. All in one platform built from the ground up.
+                  Brand and pre-launch platform for Mawimbi, an energy drink born at the edge of the Indian Ocean
+                  in Diani, Kenya. Six flavours crafted from coastal botanicals and marine minerals, an early
+                  access waitlist and a visual identity built around the rhythm of the Kenyan coast.
                 </p>
-
-                {/* Feature list */}
                 <div className="space-y-2 mb-5">
                   {[
-                    "M-Pesa native payment integration",
-                    "QR-based instant entry validation",
-                    "General + VIP tiered ticketing",
-                    "Real-time live attendee dashboard",
+                    "Six flavour product showcase with ingredient stories",
+                    "Early access waitlist with email capture",
+                    "Brand origin and coastal identity storytelling",
+                    "Zero cane sugar formulation highlighted throughout",
                   ].map(f => (
                     <div key={f} className="flex items-center gap-2">
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0">
-                        <circle cx="6" cy="6" r="5" stroke="var(--ac)" strokeWidth="1" strokeOpacity="0.35"/>
-                        <circle cx="6" cy="6" r="2" fill="var(--ac)"/>
+                        <circle cx="6" cy="6" r="5" stroke="#22d3ee" strokeWidth="1" strokeOpacity="0.35"/>
+                        <circle cx="6" cy="6" r="2" fill="#22d3ee"/>
                       </svg>
                       <span className="text-[12px]" style={{ color: "var(--t3)" }}>{f}</span>
                     </div>
                   ))}
                 </div>
               </div>
-
               <div>
                 <div className="flex flex-wrap gap-1.5 mb-5 pt-4 border-t border-white/[0.05]">
-                  {["Next.js","Supabase","PostgreSQL","TypeScript","Tailwind","M-Pesa API"].map(s => (
+                  {["Next.js", "Tailwind", "Brand", "Consumer product"].map(s => (
                     <span key={s} className="text-[10px] px-2.5 py-1 rounded-full"
-                          style={{ background: "rgba(20,184,166,0.06)", border: "1px solid rgba(20,184,166,0.12)", color: "rgba(20,184,166,0.55)" }}>
+                          style={{ background: "rgba(34,211,238,0.06)", border: "1px solid rgba(34,211,238,0.18)", color: "rgba(34,211,238,0.6)" }}>
                       {s}
                     </span>
                   ))}
                 </div>
-                <a href="https://ticketforge.vercel.app" target="_blank" rel="noopener noreferrer"
+                <a href="https://mawimbi-diani.vercel.app" target="_blank" rel="noopener noreferrer"
                    className="group/btn flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-300"
-                   style={{ background: "rgba(20,184,166,0.12)", border: "1px solid rgba(20,184,166,0.25)", color: "var(--ac)" }}
+                   style={{ background: "rgba(34,211,238,0.12)", border: "1px solid rgba(34,211,238,0.25)", color: "#22d3ee" }}
                    onMouseEnter={e => {
                      const el = e.currentTarget as HTMLElement;
-                     el.style.background = "rgba(20,184,166,0.22)";
+                     el.style.background = "rgba(34,211,238,0.22)";
                      el.style.transform = "translateY(-2px)";
-                     el.style.boxShadow = "0 8px 24px rgba(20,184,166,0.22)";
+                     el.style.boxShadow = "0 8px 24px rgba(34,211,238,0.22)";
                    }}
                    onMouseLeave={e => {
                      const el = e.currentTarget as HTMLElement;
-                     el.style.background = "rgba(20,184,166,0.12)";
+                     el.style.background = "rgba(34,211,238,0.12)";
                      el.style.transform = "";
                      el.style.boxShadow = "";
                    }}>
-                  View live app
+                  View live site
                   <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" viewBox="0 0 14 14" fill="none">
                     <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -384,8 +398,44 @@ export function Work() {
           </div>
         </div>
 
-        {/* ── Secondary projects — stacked full-width ─────────── */}
+        {/* ── Secondary projects — ranked order ───────────────── */}
         <div className="flex flex-col gap-5">
+          <ProjectCard
+            title="Aura Residences"
+            type="Real estate · Luxury residential"
+            url="https://aura-residences-alpha.vercel.app"
+            outcome="42 luxury residences presented through a single digital experience"
+            description="A premium real estate platform for a curated collection of 42 residences in Westlands, Nairobi. Three tiers from executive to penthouse, a private viewing scheduler and an amenities showcase built to match the architecture it sells."
+            features={[
+              "Interactive floor plans across three residence tiers",
+              "Private viewing scheduler with calendar booking",
+              "Curated amenities showcase with lifestyle imagery",
+              "Location proximity to Nairobi landmarks",
+            ]}
+            tags={["Next.js", "Tailwind", "Real estate", "Luxury"]}
+            screens={AURA_SCREENS}
+            accent="#c9a166"
+            delay={100}
+            inView={inView}
+          />
+          <ProjectCard
+            title="TicketForge"
+            type="Live SaaS · Event management"
+            url="https://ticketforge.vercel.app"
+            outcome="Live across East Africa — real events, real revenue"
+            description="A full-cycle event management SaaS serving organizers across East Africa. M-Pesa native payments, QR-based entry validation, real-time attendee dashboards and tiered ticketing. All in one platform built from the ground up."
+            features={[
+              "M-Pesa native payment integration",
+              "QR-based instant entry validation",
+              "General + VIP tiered ticketing",
+              "Real-time live attendee dashboard",
+            ]}
+            tags={["Next.js", "Supabase", "PostgreSQL", "TypeScript", "M-Pesa API"]}
+            screens={TF_SCREENS}
+            accent="#14b8a6"
+            delay={200}
+            inView={inView}
+          />
           <ProjectCard
             title="Professional Consulting Website"
             type="Business website · Lead generation"
@@ -401,7 +451,7 @@ export function Work() {
             tags={["Next.js", "Tailwind", "Booking form", "Lead gen"]}
             screens={SM_SCREENS}
             accent="#c2510c"
-            delay={150}
+            delay={300}
             inView={inView}
           />
           <ProjectCard
@@ -419,7 +469,7 @@ export function Work() {
             tags={["Next.js", "TypeScript", "Tailwind", "Animations"]}
             screens={CF_SCREENS}
             accent="#7c3aed"
-            delay={250}
+            delay={400}
             inView={inView}
           />
           <ProjectCard
@@ -437,7 +487,7 @@ export function Work() {
             tags={["Next.js", "Tailwind", "E-commerce", "WhatsApp API"]}
             screens={VM_SCREENS}
             accent="#3b82f6"
-            delay={350}
+            delay={500}
             inView={inView}
           />
         </div>
