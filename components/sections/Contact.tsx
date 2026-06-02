@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { CalendlyButton } from "@/components/CalendlyButton";
+import { track } from "@vercel/analytics";
 
 function useInView(ref: React.RefObject<HTMLElement | null>, threshold = 0.08) {
   const [v, setV] = useState(false);
@@ -97,6 +98,7 @@ export function Contact() {
         }),
       });
       if (!res.ok) throw new Error("Failed to send.");
+      track("contact_form_submitted");
       setSent(true);
     } catch {
       setError("Something went wrong. Please email me directly at psudai@gmail.com");

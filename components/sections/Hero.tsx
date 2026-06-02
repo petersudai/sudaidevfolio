@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { CalendlyButton } from "@/components/CalendlyButton";
+import { track } from "@vercel/analytics";
 
 const STACK = ["Next.js","React","TypeScript","Python","Flask","Node.js","Supabase","PostgreSQL","MongoDB","Tailwind CSS","Express","REST APIs"];
 
@@ -262,6 +263,7 @@ export function Hero() {
             </svg>
           </CalendlyButton>
           <a href="#work"
+             onClick={() => track("see_live_work_clicked")}
              className="group flex items-center gap-2.5 px-7 py-4 rounded-full font-body font-medium text-sm glass hover:border-teal-500/25 transition-all duration-300 hover:-translate-y-0.5"
              style={{ color: "var(--t2)" }}>
             See live work

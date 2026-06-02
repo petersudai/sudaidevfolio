@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { track } from "@vercel/analytics";
 
 function useInView(threshold = 0.08) {
   const ref = useRef<HTMLDivElement>(null);
@@ -201,6 +202,7 @@ function ProjectCard({
 
             {/* CTA */}
             <a href={url} target="_blank" rel="noopener noreferrer"
+               onClick={() => track("view_live_site", { project: title })}
                className="group/btn flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-300"
                style={{ background: `${accent}16`, border: `1px solid ${accent}30`, color: accent }}
                onMouseEnter={e => {
@@ -374,6 +376,7 @@ export function Work() {
                   ))}
                 </div>
                 <a href="https://mawimbi-diani.vercel.app" target="_blank" rel="noopener noreferrer"
+                   onClick={() => track("view_live_site", { project: "Mawimbi Energy" })}
                    className="group/btn flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-300"
                    style={{ background: "rgba(34,211,238,0.12)", border: "1px solid rgba(34,211,238,0.25)", color: "#22d3ee" }}
                    onMouseEnter={e => {

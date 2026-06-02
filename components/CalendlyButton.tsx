@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { track } from "@vercel/analytics";
 
 declare global {
   interface Window {
@@ -27,6 +28,7 @@ export function CalendlyButton({
   onMouseLeave,
 }: CalendlyButtonProps) {
   const open = () => {
+    track("book_call_clicked");
     if (typeof window !== "undefined" && window.Calendly) {
       window.Calendly.initPopupWidget({ url: CALENDLY_URL });
     } else {
