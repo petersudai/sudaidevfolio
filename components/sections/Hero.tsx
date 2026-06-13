@@ -4,8 +4,6 @@ import { cn } from "@/lib/utils";
 import { CalendlyButton } from "@/components/CalendlyButton";
 import { track } from "@vercel/analytics";
 
-const STACK = ["Next.js","React","TypeScript","Python","Flask","Node.js","Supabase","PostgreSQL","MongoDB","Tailwind CSS","Express","REST APIs"];
-
 const PHRASES = [
   "The problem stops here.",
   "Your biggest bottleneck deserves a real solution.",
@@ -169,19 +167,18 @@ export function Hero() {
         }}/>
         <div className="absolute w-[480px] h-[480px] rounded-full" style={{ top: "30vh", right: "20vw", background: "radial-gradient(ellipse,rgba(20,184,166,0.07) 0%,transparent 70%)" }}/>
         <div className="absolute w-[320px] h-[320px] rounded-full" style={{ bottom: "28vh", left: "12vw", background: "radial-gradient(ellipse,rgba(20,184,166,0.04) 0%,transparent 70%)" }}/>
-        <div className="absolute bottom-16 inset-x-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.12),transparent)" }}/>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-16 w-full">
-        {/* Status pill */}
+        {/* Status line — bare mono, no chip */}
         <div className={cn(
-          "inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-10 text-xs font-medium glass-teal",
+          "flex flex-wrap items-center gap-3 mb-10 font-mono uppercase",
           vis ? "opacity-100" : "opacity-0"
-        )} style={{ transition: "opacity 0.6s ease 0.1s" }}>
+        )} style={{ fontSize: "11px", letterSpacing: "0.18em", transition: "opacity 0.6s ease 0.1s" }}>
           <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-live-pulse" />
           <span style={{ color: "var(--t2)" }}>Available for new projects</span>
-          <span className="w-px h-3" style={{ background: "rgba(20,184,166,0.25)" }}/>
-          <span style={{ color: "var(--t3)" }}>Nairobi, Kenya · Remote worldwide</span>
+          <span style={{ color: "var(--t4)" }}>·</span>
+          <span style={{ color: "var(--t3)" }}>Nairobi · Worldwide</span>
         </div>
 
         {/* Headline */}
@@ -245,8 +242,9 @@ export function Hero() {
         {/* Sub */}
         <p className={cn("max-w-[540px] font-body mb-10", vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}
            style={{ fontSize: "17px", lineHeight: 1.75, color: "#c4d9e8", transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.3s", fontWeight: 400 }}>
-          Web apps, platforms, business tools and digital products for founders,
-          businesses and creatives who need things done right. Not just done.
+          Brand sites, products and platforms for founders and creatives.
+          Designed with <span className="font-serif-display" style={{ color: "var(--t1)" }}>intent</span>,
+          engineered to <span className="font-serif-display" style={{ color: "var(--t1)" }}>last</span>.
         </p>
 
         {/* CTAs */}
@@ -273,55 +271,14 @@ export function Hero() {
           </a>
         </div>
 
-        {/* Stats — 4-column grid for equal spacing; 2-col on mobile */}
-        <div className={cn("grid grid-cols-2 sm:grid-cols-4 pt-10 border-t", vis ? "opacity-100" : "opacity-0")}
-             style={{ borderColor: "rgba(20,184,166,0.1)", transition: "opacity 0.8s ease 0.6s" }}>
-          {[
-            { val: "3+",         label: "Years",           sub: "shipping production software" },
-            { val: "12h",        label: "Response time",    sub: "guaranteed"                   },
-            { val: "100%",       label: "On-time",          sub: "projects delivered on deadline" },
-            { val: "End-to-end", label: "Ownership",        sub: "design to deployment"         },
-          ].map((s, i) => (
-            <div key={s.label}
-                 className={cn(
-                   "flex flex-col gap-1 group py-4 pr-4",
-                   // Left border divider on all but first — desktop only
-                   i > 0 ? "sm:border-l sm:pl-8" : "sm:pl-0",
-                   // Mobile: bottom border on first row items
-                   i < 2 ? "border-b sm:border-b-0 pb-6 sm:pb-4" : "pt-6 sm:pt-4",
-                 )}
-                 style={{ borderColor: "rgba(20,184,166,0.08)" }}>
-              {/* Fixed-height value row keeps all four cells vertically aligned */}
-              <div style={{ height: "2.4rem", display: "flex", alignItems: "center" }}>
-                <span className="font-heading font-bold transition-colors duration-300 group-hover:text-teal-300"
-                      style={{
-                        fontSize: s.val.length > 4 ? "1.3rem" : "2rem",
-                        lineHeight: 1,
-                        color: "var(--t1)",
-                        whiteSpace: "nowrap",
-                      }}>
-                  {s.val}
-                </span>
-              </div>
-              <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--t2)", lineHeight: 1.4 }}>{s.label}</span>
-              <span style={{ fontSize: "11px", color: "var(--t3)", lineHeight: 1.4 }}>{s.sub}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Stack bar */}
-      <div className="relative z-10 border-t" style={{ background: "rgba(3,8,14,0.7)", backdropFilter: "blur(12px)", borderColor: "rgba(255,255,255,0.05)" }}>
-        <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-2">
-          <span className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.15em", color: "var(--t4)", textTransform: "uppercase" }}>Stack</span>
-          {STACK.map(t => (
-            <span key={t} className="transition-colors duration-200 cursor-default"
-                  style={{ fontSize: "12px", color: "var(--t3)", fontWeight: 400 }}
-                  onMouseEnter={e => (e.currentTarget.style.color="var(--ac)")}
-                  onMouseLeave={e => (e.currentTarget.style.color="var(--t3)")}>
-              {t}
-            </span>
-          ))}
+        {/* Positioning line — quiet, confident, replaces the stat row */}
+        <div className={cn("pt-10", vis ? "opacity-100" : "opacity-0")}
+             style={{ transition: "opacity 0.8s ease 0.6s" }}>
+          <p className="font-mono uppercase"
+             style={{ fontSize: "11px", letterSpacing: "0.22em", lineHeight: 2, color: "var(--t3)" }}>
+            Every pixel <span style={{ color: "var(--go2)" }}>designed</span> with intent.
+            Every system <span style={{ color: "var(--ac3)" }}>engineered</span> to perform.
+          </p>
         </div>
       </div>
     </section>

@@ -120,11 +120,12 @@ export function Contact() {
           {/* Left */}
           <div className={cn("transition-all duration-700", v ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>
             <div className="flex items-center gap-3 mb-5">
+              <span className="font-mono text-[10px]" style={{ color: "var(--t4)" }}>05</span>
               <div className="w-8 h-px" style={{ background: "var(--ac)" }}/>
               <span className="font-mono text-2xs" style={{ color: "var(--ac)", letterSpacing: "0.18em", textTransform: "uppercase" }}>Get in touch</span>
             </div>
             <h2 className="font-heading mb-5" style={{ fontSize: "clamp(2rem,4vw,2.75rem)", color: "var(--t1)", lineHeight: 1.1 }}>
-              Ready to build<br/>something great?
+              Ready to build<br/><span className="font-serif-display" style={{ color: "var(--ac3)" }}>something great?</span>
             </h2>
             <p style={{ fontSize: "15px", color: "var(--t2)", lineHeight: 1.75, marginBottom: "2.5rem", fontWeight: 400 }}>
               Whether you have a fully scoped project or just a rough idea, I&apos;d love to

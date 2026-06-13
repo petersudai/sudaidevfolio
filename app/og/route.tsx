@@ -61,7 +61,7 @@ export async function GET() {
         <div style={{ display: "flex", flexDirection: "column", gap: "0px", position: "relative", zIndex: 1 }}>
           {/* Name */}
           <div style={{ fontSize: "22px", fontWeight: 500, color: "#6a8fa8", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "20px" }}>
-            Peter Sudai · Fullstack Developer
+            Peter Sudai · Fullstack Developer & Product Designer
           </div>
 
           {/* Final typewriter phrase */}
@@ -75,22 +75,11 @@ export async function GET() {
           </div>
         </div>
 
-        {/* Bottom row — stats + location */}
+        {/* Bottom row — positioning line + location */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", position: "relative", zIndex: 1 }}>
-          {/* Stats */}
-          <div style={{ display: "flex", gap: "48px" }}>
-            {[
-              { val: "3+",  label: "Years" },
-              { val: "12h", label: "Response time" },
-              { val: "100%", label: "On-time" },
-              { val: "E2E", label: "Ownership" },
-            ].map(s => (
-              <div key={s.label} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                <span style={{ fontSize: "28px", fontWeight: 700, color: "#f0f6ff", lineHeight: 1 }}>{s.val}</span>
-                <span style={{ fontSize: "13px", color: "#6a8fa8", lineHeight: 1.4 }}>{s.label}</span>
-              </div>
-            ))}
-          </div>
+          <span style={{ fontSize: "18px", color: "#6a8fa8", letterSpacing: "0.03em", maxWidth: "640px", lineHeight: 1.6 }}>
+            Brand sites, products and platforms. Designed and engineered end to end.
+          </span>
 
           {/* Location */}
           <span style={{ fontSize: "15px", color: "#3a5a70", letterSpacing: "0.04em" }}>

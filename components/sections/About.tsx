@@ -63,18 +63,19 @@ export function About() {
                   alt="Peter Sudai"
                   fill
                   className="object-cover object-top"
-                  quality={100}
+                  quality={85}
                 />
               </div>
 
               {/* Label + heading */}
               <div className="pt-1">
                 <div className="flex items-center gap-3 mb-4">
+                  <span className="font-mono text-[10px]" style={{ color: "var(--t4)" }}>04</span>
                   <div className="w-8 h-px" style={{ background: "var(--ac)" }}/>
                   <span className="font-mono text-2xs" style={{ color: "var(--ac)", letterSpacing: "0.18em", textTransform: "uppercase" }}>About</span>
                 </div>
                 <h2 className="font-heading" style={{ fontSize: "clamp(1.6rem,3.2vw,2.4rem)", color: "var(--t1)", lineHeight: 1.2 }}>
-                  Good software starts<br/>with good questions
+                  Good software starts<br/>with <span className="font-serif-display" style={{ color: "var(--ac3)" }}>good questions</span>
                 </h2>
               </div>
             </div>

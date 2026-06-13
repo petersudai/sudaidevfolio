@@ -13,8 +13,8 @@ export function Footer() {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="relative py-8" style={{ background: "var(--s0)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <footer className="relative pt-12 pb-24 md:pb-12" style={{ background: "var(--s0)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10">
         {/* Logo */}
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center font-heading font-bold text-[11px]"
@@ -25,7 +25,7 @@ export function Footer() {
         </div>
 
         {/* Links */}
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
           {[
             { label: "Work",     href: "#work"                          },
             { label: "Services", href: "#services"                      },
@@ -35,17 +35,22 @@ export function Footer() {
           ].map(l => (
             <a key={l.label} href={l.href}
                className="text-xs transition-colors duration-200"
-               style={{ color: "var(--t4)" }}
-               onMouseEnter={e => (e.currentTarget.style.color = "var(--t2)")}
-               onMouseLeave={e => (e.currentTarget.style.color = "var(--t4)")}>
+               style={{ color: "var(--t3)" }}
+               onMouseEnter={e => (e.currentTarget.style.color = "var(--t1)")}
+               onMouseLeave={e => (e.currentTarget.style.color = "var(--t3)")}>
               {l.label}
             </a>
           ))}
         </div>
 
-        {/* Copyright */}
-        <div className="text-xs" style={{ color: "var(--t4)" }}>
-          © {new Date().getFullYear()} Peter Sudai
+        {/* Copyright + colophon */}
+        <div className="text-center md:text-right" style={{ color: "var(--t3)" }}>
+          <div className="text-xs" style={{ lineHeight: 1.6, letterSpacing: "0.06em" }}>
+            © {new Date().getFullYear()} Peter Sudai
+          </div>
+          <div className="mt-2" style={{ fontSize: "11px", letterSpacing: "0.05em", lineHeight: 1.6, color: "var(--t4)" }}>
+            Designed and built in <span className="font-serif-display" style={{ color: "var(--ac3)" }}>Nairobi</span>
+          </div>
         </div>
       </div>
 
@@ -53,7 +58,7 @@ export function Footer() {
       <button
         onClick={scrollTop}
         aria-label="Scroll to top"
-        className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+        className="fixed bottom-8 right-8 z-50 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300"
         style={{
           background: "rgba(20,184,166,0.12)",
           border: "1px solid rgba(20,184,166,0.25)",

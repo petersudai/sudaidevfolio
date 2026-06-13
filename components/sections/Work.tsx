@@ -1,80 +1,34 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { track } from "@vercel/analytics";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { PROJECTS } from "@/lib/projects";
 
-function useInView(threshold = 0.08) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const TF_SCREENS = [
-  { src: "/images/ticketforge/landing.png",     label: "Landing page"    },
-  { src: "/images/ticketforge/marketplace.png", label: "Event discovery" },
-  { src: "/images/ticketforge/ticket-qr.png",   label: "QR ticket"       },
-];
-
-const SM_SCREENS = [
-  { src: "/images/sarah-mitchell/hero.png",    label: "Hero"         },
-  { src: "/images/sarah-mitchell/about.png",   label: "About"        },
-  { src: "/images/sarah-mitchell/booking.png", label: "Booking form" },
-];
-
-const VM_SCREENS = [
-  { src: "/images/voltamobile/hero.png",     label: "Hero"          },
-  { src: "/images/voltamobile/featured.png", label: "Featured week" },
-  { src: "/images/voltamobile/catalog.png",  label: "All phones"    },
-];
-
-const AURA_SCREENS = [
-  { src: "/images/aura-residences/hero.png",       label: "Landing"         },
-  { src: "/images/aura-residences/residences.png", label: "Residences"      },
-  { src: "/images/aura-residences/amenities.png",  label: "Amenities"       },
-  { src: "/images/aura-residences/viewing.png",    label: "Private viewing" },
-  { src: "/images/aura-residences/location.png",   label: "Location"        },
-];
-
-const MW_SCREENS = [
-  { src: "/images/mawimbi/hero.png",     label: "Hero"     },
-  { src: "/images/mawimbi/product.png",  label: "Product"  },
-  { src: "/images/mawimbi/flavours.png", label: "Flavours" },
-  { src: "/images/mawimbi/waitlist.png", label: "Waitlist" },
-];
-
-// Cycling across the main platform and two distinct client identities
-const CF_SCREENS = [
-  { src: "/images/creative-folio/main.png",  label: "Platform home"             },
-  { src: "/images/amara/hero.png",           label: "AMARA — DJ site"           },
-  { src: "/images/amara/about.png",          label: "AMARA — About"             },
-  { src: "/images/nadia-osei/hero.png",      label: "Nadia Osei — Photography"  },
-  { src: "/images/nadia-osei/about.png",     label: "Nadia Osei — About"        },
-];
-
-/* ─── Reusable project card — full-width horizontal layout ──── */
+/* ─── Editorial case block — GSAP scroll reveal + parallax ───── */
 function ProjectCard({
-  title, type, url, description, outcome, features, tags, screens, accent, delay, inView,
+  slug, title, type, url, outcome, description, meta, screens, accent,
+  flip = false, featured = false,
 }: {
+  slug: string;
   title: string;
   type: string;
   url: string;
-  description: string;
   outcome: string;
-  features: string[];
-  tags: string[];
+  description: string;
+  meta: string;
   screens: { src: string; label: string }[];
   accent: string;
-  delay: number;
-  inView: boolean;
+  flip?: boolean;
+  featured?: boolean;
 }) {
+  const root = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -82,147 +36,171 @@ function ProjectCard({
     return () => clearInterval(iv);
   }, [screens.length]);
 
-  return (
-    <div
-      className={cn(
-        "group rounded-3xl overflow-hidden border transition-all duration-700",
-        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      )}
-      style={{
-        background: "var(--s3)",
-        border: "1px solid rgba(255,255,255,0.06)",
-        transitionDelay: `${delay}ms`,
-      }}
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = `${accent}30`;
-        el.style.boxShadow = `0 24px 60px rgba(0,0,0,0.3), 0 0 0 1px ${accent}14`;
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = "rgba(255,255,255,0.06)";
-        el.style.boxShadow = "";
-      }}
-    >
-      {/* Accent top line */}
-      <div className="h-px w-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-           style={{ background: `linear-gradient(90deg, transparent, ${accent}60, transparent)` }} />
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = root.current;
+    if (!el) return;
 
-      <div className="grid lg:grid-cols-[1fr_380px]">
-        {/* Screenshot area */}
-        <div className="relative min-h-[300px] lg:min-h-[400px] overflow-hidden border-b lg:border-b-0 lg:border-r border-white/[0.05]"
-             style={{ background: "#03080e" }}>
+    const img   = el.querySelector("[data-img]");
+    const inner = el.querySelector("[data-parallax]");
+    const words = el.querySelectorAll("[data-reveal]");
+
+    // Image block rises in as it enters the viewport
+    gsap.from(img, {
+      y: 64, opacity: 0, duration: 1, ease: "power3.out",
+      scrollTrigger: { trigger: el, start: "top 82%" },
+    });
+
+    // Text lines stagger up just after
+    gsap.from(words, {
+      y: 36, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.09,
+      scrollTrigger: { trigger: el, start: "top 78%" },
+    });
+
+    // Subtle parallax drift on the screenshots while scrolling through
+    gsap.fromTo(inner,
+      { yPercent: -4, scale: 1.08 },
+      {
+        yPercent: 4, scale: 1.08, ease: "none",
+        scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
+      }
+    );
+  }, { scope: root });
+
+  return (
+    <div ref={root} className={cn("grid lg:grid-cols-12 gap-8 lg:gap-14", featured ? "items-start" : "items-center")}>
+      {/* Imagery — links through to the case study */}
+      <Link
+        href={`/work/${slug}`}
+        onClick={() => track("open_case_study", { project: title })}
+        data-img
+        className={cn(
+          "group relative block rounded-3xl overflow-hidden border transition-colors duration-500",
+          featured
+            ? "lg:col-span-12 h-[300px] sm:h-[400px] lg:h-[540px]"
+            : "lg:col-span-7 h-[260px] sm:h-[340px] lg:h-[440px]",
+          !featured && flip && "lg:order-2"
+        )}
+        style={{ background: "#03080e", borderColor: "rgba(255,255,255,0.06)" }}
+        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = `${accent}35`)}
+        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)")}
+      >
+        <div data-parallax className="absolute inset-0">
           {screens.map((s, i) => (
             <div key={s.src}
                  className="absolute inset-0 transition-opacity duration-700"
                  style={{ opacity: active === i ? 1 : 0 }}>
               <Image
                 src={s.src}
-                alt={`${title} — ${s.label}`}
+                alt={`${title} · ${s.label}`}
                 fill
-                className="object-contain object-top"
+                className="object-contain object-center"
                 sizes="(max-width: 1024px) 100vw, 60vw"
-                quality={100}
-                priority={i === 0}
+                quality={85}
+                priority={featured && i === 0}
               />
             </div>
           ))}
-
-          {/* Live pill */}
-          <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-               style={{ background: "rgba(3,8,14,0.85)", border: `1px solid ${accent}35` }}>
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: accent, boxShadow: `0 0 5px ${accent}` }} />
-            <span className="text-[9px] font-bold uppercase tracking-[0.14em]" style={{ color: accent }}>Live</span>
-          </div>
-
-          {/* Screen label */}
-          <div className="absolute bottom-4 right-4 z-10">
-            <span className="text-[10px] font-mono px-2.5 py-1 rounded-full"
-                  style={{ background: "rgba(3,8,14,0.85)", border: "1px solid rgba(255,255,255,0.07)", color: "var(--t4)" }}>
-              {screens[active].label}
-            </span>
-          </div>
-
-          {/* Dot switcher */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
-            {screens.map((s, i) => (
-              <button key={s.src} onClick={() => setActive(i)} aria-label={s.label}
-                      style={{
-                        width: active === i ? "20px" : "5px", height: "5px",
-                        borderRadius: "3px", transition: "all 0.3s",
-                        background: active === i ? accent : "rgba(255,255,255,0.2)",
-                      }} />
-            ))}
-          </div>
         </div>
 
-        {/* Content */}
-        <div className="p-8 flex flex-col justify-between">
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: accent }}>
-              {type}
+        {/* Live pill */}
+        <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+             style={{ background: "rgba(3,8,14,0.85)", border: `1px solid ${accent}35` }}>
+          <span className="w-1.5 h-1.5 rounded-full" style={{ background: accent, boxShadow: `0 0 5px ${accent}` }} />
+          <span className="text-[9px] font-bold uppercase tracking-[0.14em]" style={{ color: accent }}>Live</span>
+        </div>
+
+        {/* Screen label */}
+        <div className="absolute bottom-4 right-4 z-10">
+          <span className="text-[10px] font-mono px-2.5 py-1 rounded-full"
+                style={{ background: "rgba(3,8,14,0.85)", border: "1px solid rgba(255,255,255,0.07)", color: "var(--t4)" }}>
+            {screens[active].label}
+          </span>
+        </div>
+
+        {/* Dot switcher */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+          {screens.map((s, i) => (
+            <button key={s.src}
+                    onClick={e => { e.preventDefault(); setActive(i); }}
+                    aria-label={s.label}
+                    style={{
+                      width: active === i ? "20px" : "5px", height: "5px",
+                      borderRadius: "3px", transition: "all 0.3s",
+                      background: active === i ? accent : "rgba(255,255,255,0.2)",
+                    }} />
+          ))}
+        </div>
+
+        {/* View case study hint on hover */}
+        <div className="absolute inset-0 z-[5] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+             style={{ background: "rgba(3,8,14,0.35)" }}>
+          <span className="flex items-center gap-2 px-5 py-2.5 rounded-full font-mono uppercase backdrop-blur-sm"
+                style={{ fontSize: "11px", letterSpacing: "0.16em", background: "rgba(3,8,14,0.7)", border: `1px solid ${accent}55`, color: accent }}>
+            View case study
+            <svg className="w-3 h-3" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </span>
+        </div>
+      </Link>
+
+      {/* Words */}
+      <div className={cn(featured ? "lg:col-span-8" : "lg:col-span-5", !featured && flip && "lg:order-1")}>
+        <div data-reveal className="flex items-center gap-3 mb-4">
+          {featured && (
+            <span className="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full"
+                  style={{ background: `${accent}10`, border: `1px solid ${accent}30`, color: accent }}>
+              Featured
             </span>
-            <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-2 transition-colors duration-300 group-hover:text-teal-300"
-                style={{ color: "#e8f0f5", lineHeight: 1.2 }}>
-              {title}
-            </h3>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: accent }} />
-              <span className="text-[11px] font-mono tracking-wide" style={{ color: accent, opacity: 0.85 }}>{outcome}</span>
-            </div>
-            <p className="text-[13px] leading-relaxed mb-5 transition-colors duration-300 group-hover:text-[#7a9ab0]"
-               style={{ color: "#4a6070" }}>
-              {description}
-            </p>
+          )}
+          <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: accent }}>
+            {type}
+          </span>
+        </div>
 
-            {/* Feature list */}
-            <div className="space-y-2 mb-5">
-              {features.map(f => (
-                <div key={f} className="flex items-center gap-2">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0">
-                    <circle cx="6" cy="6" r="5" stroke={accent} strokeWidth="1" strokeOpacity="0.35"/>
-                    <circle cx="6" cy="6" r="2" fill={accent}/>
-                  </svg>
-                  <span className="text-[12px]" style={{ color: "var(--t3)" }}>{f}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+        <h3 data-reveal className="font-heading font-bold mb-4"
+            style={{ fontSize: "clamp(1.6rem,2.8vw,2.1rem)", color: "#e8f0f5", lineHeight: 1.15 }}>
+          {title}
+        </h3>
 
-          <div>
-            {/* Tags */}
-            <div className="flex flex-wrap gap-1.5 mb-5 pt-4 border-t border-white/[0.05]">
-              {tags.map(t => (
-                <span key={t} className="text-[10px] px-2.5 py-1 rounded-full"
-                      style={{ background: `${accent}0d`, border: `1px solid ${accent}30`, color: `${accent}99` }}>
-                  {t}
-                </span>
-              ))}
-            </div>
+        <p data-reveal className="mb-3" style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--t2)", fontWeight: 500 }}>
+          {outcome}
+        </p>
 
-            {/* CTA */}
-            <a href={url} target="_blank" rel="noopener noreferrer"
-               onClick={() => track("view_live_site", { project: title })}
-               className="group/btn flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-300"
-               style={{ background: `${accent}16`, border: `1px solid ${accent}30`, color: accent }}
-               onMouseEnter={e => {
-                 const el = e.currentTarget as HTMLElement;
-                 el.style.background = `${accent}26`;
-                 el.style.transform = "translateY(-2px)";
-                 el.style.boxShadow = `0 8px 24px ${accent}22`;
-               }}
-               onMouseLeave={e => {
-                 const el = e.currentTarget as HTMLElement;
-                 el.style.background = `${accent}16`;
-                 el.style.transform = "";
-                 el.style.boxShadow = "";
-               }}>
-              View live site
-              <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" viewBox="0 0 14 14" fill="none">
-                <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
-          </div>
+        <p data-reveal className="mb-6" style={{ fontSize: "13.5px", lineHeight: 1.75, color: "#4a6070" }}>
+          {description}
+        </p>
+
+        <div data-reveal className="font-mono mb-7" style={{ fontSize: "11px", letterSpacing: "0.08em", color: "var(--t4)" }}>
+          {meta}
+        </div>
+
+        <div data-reveal className="flex flex-wrap items-center gap-x-7 gap-y-3">
+          <Link href={`/work/${slug}`}
+                onClick={() => track("open_case_study", { project: title })}
+                className="group/link inline-flex items-center gap-2.5 text-[13px] font-semibold transition-all duration-300"
+                style={{ color: accent }}>
+            <span className="relative">
+              View case study
+              <span className="absolute -bottom-1 left-0 h-px w-0 group-hover/link:w-full transition-all duration-300"
+                    style={{ background: accent }} />
+            </span>
+            <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover/link:translate-x-1" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
+          <a href={url} target="_blank" rel="noopener noreferrer"
+             onClick={() => track("view_live_site", { project: title })}
+             className="group/ext inline-flex items-center gap-2 text-[12px] font-medium transition-colors duration-300"
+             style={{ color: "var(--t3)" }}
+             onMouseEnter={e => (e.currentTarget.style.color = accent)}
+             onMouseLeave={e => (e.currentTarget.style.color = "var(--t3)")}>
+            Live site
+            <svg className="w-3 h-3 transition-transform duration-300 group-hover/ext:translate-x-0.5 group-hover/ext:-translate-y-0.5" viewBox="0 0 14 14" fill="none">
+              <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </a>
         </div>
       </div>
     </div>
@@ -231,268 +209,59 @@ function ProjectCard({
 
 /* ─── Main Work section ──────────────────────────────────────── */
 export function Work() {
-  const { ref, inView } = useInView();
-  const [activeScreen, setActiveScreen] = useState(0);
+  const headerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const iv = setInterval(() => setActiveScreen(s => (s + 1) % MW_SCREENS.length), 3500);
-    return () => clearInterval(iv);
-  }, []);
+  useGSAP(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = headerRef.current;
+    if (!el) return;
+    gsap.from(el.children, {
+      y: 32, opacity: 0, duration: 0.9, ease: "power3.out", stagger: 0.1,
+      scrollTrigger: { trigger: el, start: "top 85%" },
+    });
+  }, { scope: headerRef });
 
   return (
     <section id="work" className="py-28 relative" style={{ background: "var(--s1)" }}>
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-px"
            style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.1),transparent)" }} />
 
-      <div className="max-w-6xl mx-auto px-6" ref={ref}>
+      <div className="max-w-6xl mx-auto px-6">
 
         {/* Header */}
-        <div className={cn("mb-16 transition-all duration-700", inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
+        <div ref={headerRef} className="mb-20">
           <div className="flex items-center gap-3 mb-4">
+            <span className="font-mono text-[10px]" style={{ color: "var(--t4)" }}>01</span>
             <div className="h-px w-8" style={{ background: "var(--ac)" }} />
             <span className="text-[11px] uppercase tracking-[0.2em] font-medium" style={{ color: "var(--ac)" }}>Selected work</span>
           </div>
-          <h2 className="font-heading font-bold text-[clamp(2rem,4vw,3rem)] mb-4" style={{ color: "#e8f0f5" }}>
-            Products I&apos;ve built
+          <h2 className="font-heading font-bold text-[clamp(2rem,4.5vw,3.25rem)] mb-4" style={{ color: "#e8f0f5", lineHeight: 1.1 }}>
+            Work with <span className="font-serif-display" style={{ color: "var(--ac3)" }}>intent</span>
           </h2>
-          <p className="text-[1rem] max-w-[440px] leading-relaxed font-normal" style={{ color: "#7a9ab0" }}>
-            Real systems serving real users. Designed for business outcomes, not just portfolio points.
+          <p className="text-[1rem] max-w-[460px] leading-relaxed font-normal" style={{ color: "#7a9ab0" }}>
+            Brand sites, products and platforms. Each one designed,
+            engineered and shipped end to end.
           </p>
         </div>
 
-        {/* ── Mawimbi — Flagship ─────────────────────────────── */}
-        <div className={cn(
-          "group rounded-3xl overflow-hidden border transition-all duration-700 mb-5",
-          "hover:shadow-[0_24px_80px_rgba(34,211,238,0.07)]",
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        )} style={{ background: "var(--s3)", borderColor: "rgba(34,211,238,0.12)" }}>
-
-          {/* Flagship banner */}
-          <div className="flex items-center justify-between px-8 py-4 border-b"
-               style={{ background: "rgba(34,211,238,0.04)", borderColor: "rgba(34,211,238,0.08)" }}>
-            <div className="flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full animate-live-pulse" style={{ background: "#22d3ee" }} />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.14em]"
-                    style={{
-                      background: "linear-gradient(90deg, #67e8f9, #22d3ee, #67e8f9)",
-                      backgroundSize: "200% auto",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                      animation: "shimmer 2.4s linear infinite",
-                    }}>
-                Consumer Brand · Diani, Kenya
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-[11px] font-mono" style={{ color: "#4d6f88" }}>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "rgba(34,211,238,0.4)" }} />
-              mawimbi-diani.vercel.app
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-[1fr_380px]">
-            {/* Screenshots */}
-            <div className="relative min-h-[300px] lg:min-h-[400px] overflow-hidden border-b lg:border-b-0 lg:border-r"
-                 style={{ background: "#03080e", borderColor: "rgba(34,211,238,0.07)" }}>
-              {MW_SCREENS.map((s, i) => (
-                <div key={s.src}
-                     className="absolute inset-0 flex items-center justify-center p-4 transition-opacity duration-700"
-                     style={{ opacity: activeScreen === i ? 1 : 0 }}>
-                  <Image
-                    src={s.src}
-                    alt={`Mawimbi — ${s.label}`}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 1024px) 100vw, 55vw"
-                    quality={100}
-                    priority={i === 0}
-                  />
-                </div>
-              ))}
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-                {MW_SCREENS.map((s, i) => (
-                  <button key={s.src} onClick={() => setActiveScreen(i)} aria-label={s.label}
-                          style={{
-                            width: activeScreen === i ? "24px" : "6px", height: "6px",
-                            borderRadius: "3px", transition: "all 0.3s",
-                            background: activeScreen === i ? "#22d3ee" : "rgba(255,255,255,0.2)",
-                          }} />
-                ))}
-              </div>
-              <div className="absolute bottom-5 right-5 z-20">
-                <span className="text-[10px] font-mono px-2.5 py-1 rounded-full"
-                      style={{ background: "rgba(3,8,14,0.8)", border: "1px solid rgba(255,255,255,0.07)", color: "#4d6f88" }}>
-                  {MW_SCREENS[activeScreen].label}
-                </span>
-              </div>
-            </div>
-
-            {/* Details */}
-            <div className="p-8 flex flex-col justify-between">
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.16em] font-semibold" style={{ color: "#22d3ee" }}>
-                  Brand website · Consumer product
-                </span>
-                <h3 className="font-heading font-bold text-[22px] mt-1.5 mb-2 transition-colors duration-300"
-                    style={{ color: "#e8f0f5", lineHeight: 1.2 }}>
-                  Mawimbi Energy
-                </h3>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#22d3ee" }} />
-                  <span className="text-[11px] font-mono tracking-wide" style={{ color: "#22d3ee", opacity: 0.85 }}>
-                    A Kenyan coastal brand launched online before hitting a single shelf
-                  </span>
-                </div>
-                <p className="text-[13px] leading-relaxed mb-5 transition-colors duration-300 group-hover:text-[#7a9ab0]"
-                   style={{ color: "#4a6070" }}>
-                  Brand and pre-launch platform for Mawimbi, an energy drink born at the edge of the Indian Ocean
-                  in Diani, Kenya. Six flavours crafted from coastal botanicals and marine minerals, an early
-                  access waitlist and a visual identity built around the rhythm of the Kenyan coast.
-                </p>
-                <div className="space-y-2 mb-5">
-                  {[
-                    "Six flavour product showcase with ingredient stories",
-                    "Early access waitlist with email capture",
-                    "Brand origin and coastal identity storytelling",
-                    "Zero cane sugar formulation highlighted throughout",
-                  ].map(f => (
-                    <div key={f} className="flex items-center gap-2">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0">
-                        <circle cx="6" cy="6" r="5" stroke="#22d3ee" strokeWidth="1" strokeOpacity="0.35"/>
-                        <circle cx="6" cy="6" r="2" fill="#22d3ee"/>
-                      </svg>
-                      <span className="text-[12px]" style={{ color: "var(--t3)" }}>{f}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <div className="flex flex-wrap gap-1.5 mb-5 pt-4 border-t border-white/[0.05]">
-                  {["Next.js", "Tailwind", "Brand", "Consumer product"].map(s => (
-                    <span key={s} className="text-[10px] px-2.5 py-1 rounded-full"
-                          style={{ background: "rgba(34,211,238,0.06)", border: "1px solid rgba(34,211,238,0.18)", color: "rgba(34,211,238,0.6)" }}>
-                      {s}
-                    </span>
-                  ))}
-                </div>
-                <a href="https://mawimbi-diani.vercel.app" target="_blank" rel="noopener noreferrer"
-                   onClick={() => track("view_live_site", { project: "Mawimbi Energy" })}
-                   className="group/btn flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-300"
-                   style={{ background: "rgba(34,211,238,0.12)", border: "1px solid rgba(34,211,238,0.25)", color: "#22d3ee" }}
-                   onMouseEnter={e => {
-                     const el = e.currentTarget as HTMLElement;
-                     el.style.background = "rgba(34,211,238,0.22)";
-                     el.style.transform = "translateY(-2px)";
-                     el.style.boxShadow = "0 8px 24px rgba(34,211,238,0.22)";
-                   }}
-                   onMouseLeave={e => {
-                     const el = e.currentTarget as HTMLElement;
-                     el.style.background = "rgba(34,211,238,0.12)";
-                     el.style.transform = "";
-                     el.style.boxShadow = "";
-                   }}>
-                  View live site
-                  <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" viewBox="0 0 14 14" fill="none">
-                    <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Secondary projects — ranked order ───────────────── */}
-        <div className="flex flex-col gap-5">
-          <ProjectCard
-            title="Aura Residences"
-            type="Real estate · Luxury residential"
-            url="https://aura-residences-alpha.vercel.app"
-            outcome="42 luxury residences presented through a single digital experience"
-            description="A premium real estate platform for a curated collection of 42 residences in Westlands, Nairobi. Three tiers from executive to penthouse, a private viewing scheduler and an amenities showcase built to match the architecture it sells."
-            features={[
-              "Interactive floor plans across three residence tiers",
-              "Private viewing scheduler with calendar booking",
-              "Curated amenities showcase with lifestyle imagery",
-              "Location proximity to Nairobi landmarks",
-            ]}
-            tags={["Next.js", "Tailwind", "Real estate", "Luxury"]}
-            screens={AURA_SCREENS}
-            accent="#c9a166"
-            delay={100}
-            inView={inView}
-          />
-          <ProjectCard
-            title="TicketForge"
-            type="Live SaaS · Event management"
-            url="https://ticketforge.vercel.app"
-            outcome="Live across East Africa — real events, real revenue"
-            description="A full-cycle event management SaaS serving organizers across East Africa. M-Pesa native payments, QR-based entry validation, real-time attendee dashboards and tiered ticketing. All in one platform built from the ground up."
-            features={[
-              "M-Pesa native payment integration",
-              "QR-based instant entry validation",
-              "General + VIP tiered ticketing",
-              "Real-time live attendee dashboard",
-            ]}
-            tags={["Next.js", "Supabase", "PostgreSQL", "TypeScript", "M-Pesa API"]}
-            screens={TF_SCREENS}
-            accent="#14b8a6"
-            delay={200}
-            inView={inView}
-          />
-          <ProjectCard
-            title="Professional Consulting Website"
-            type="Business website · Lead generation"
-            url="https://sarahmitchellcorp.vercel.app"
-            outcome="Converts C-suite visitors into booked calls before they hit the form"
-            description="Built for a business consultant targeting mid-market CEOs. Every section earns its place. Credibility-first hero with floating proof overlays, social validation built into the layout, and a booking form designed to qualify leads before the first call is ever made."
-            features={[
-              "Conversion-first layout",
-              "Lead-qualifying booking form",
-              "Credential storytelling",
-              "Social proof overlays",
-            ]}
-            tags={["Next.js", "Tailwind", "Booking form", "Lead gen"]}
-            screens={SM_SCREENS}
-            accent="#c2510c"
-            delay={300}
-            inView={inView}
-          />
-          <ProjectCard
-            title="Creative Portfolio Platform"
-            type="Productized service · Creatives"
-            url="https://sudaicreativefolio.vercel.app"
-            outcome="One codebase, infinite client identities — shipped in days not months"
-            description="One platform, any creative identity. Built for DJs, photographers and visual artists who want a site that actually represents their work. Custom audio player with waveform visualisation, masonry gallery with lightbox, booking tiers and a design language that adapts completely per client."
-            features={[
-              "Custom audio player + waveforms",
-              "Masonry gallery + lightbox",
-              "Session booking tiers",
-              "Per-client design identity",
-            ]}
-            tags={["Next.js", "TypeScript", "Tailwind", "Animations"]}
-            screens={CF_SCREENS}
-            accent="#7c3aed"
-            delay={400}
-            inView={inView}
-          />
-          <ProjectCard
-            title="VoltaMobile"
-            type="E-commerce · Phone retail"
-            url="https://voltamobile.vercel.app"
-            outcome="Takes Nairobi phone shops online — no developer dependency after handoff"
-            description="A full storefront built to pitch phone shop owners and general merchants on what an online presence can do for them. Filterable device catalog, a featured section for weekly highlights, WhatsApp-first checkout and battery-tested verification badges. Everything a Nairobi electronics shop needs to move stock online, under one roof."
-            features={[
-              "Filterable catalog by brand, condition and color",
-              "Featured section for weekly highlights",
-              "WhatsApp-first checkout flow",
-              "Battery-tested and Ex-UK condition badges",
-            ]}
-            tags={["Next.js", "Tailwind", "E-commerce", "WhatsApp API"]}
-            screens={VM_SCREENS}
-            accent="#3b82f6"
-            delay={500}
-            inView={inView}
-          />
+        {/* Case blocks — generous spacing, alternating rhythm */}
+        <div className="flex flex-col gap-20 lg:gap-28">
+          {PROJECTS.map((p, i) => (
+            <ProjectCard
+              key={p.slug}
+              slug={p.slug}
+              title={p.title}
+              type={p.type}
+              url={p.url}
+              outcome={p.outcome}
+              description={p.description}
+              meta={p.meta}
+              screens={p.screens}
+              accent={p.accent}
+              featured={p.featured}
+              flip={!p.featured && i % 2 === 1}
+            />
+          ))}
         </div>
 
       </div>

@@ -87,11 +87,12 @@ export function Services() {
         {/* Header */}
         <div className={cn("mb-20 transition-all duration-700", v ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6")}>
           <div className="flex items-center gap-3 mb-5">
+            <span className="font-mono text-[10px]" style={{ color: "var(--t4)" }}>02</span>
             <div className="w-8 h-px" style={{ background: "var(--ac)" }}/>
             <span className="font-mono text-2xs" style={{ color: "var(--ac)", letterSpacing: "0.18em", textTransform: "uppercase" }}>What I build</span>
           </div>
           <h2 className="font-heading mb-5" style={{ fontSize: "clamp(2rem,4vw,3rem)", color: "var(--t1)" }}>
-            From first idea to a<br/>product that earns its keep
+            From first idea to a<br/>product that <span className="font-serif-display" style={{ color: "var(--ac3)" }}>earns its keep</span>
           </h2>
           <p style={{ fontSize: "16px", color: "var(--t2)", maxWidth: "480px", lineHeight: 1.8, fontWeight: 400 }}>
             Every project starts with a problem worth solving. I help you define it, scope it, and build the system that earns its keep in your business.

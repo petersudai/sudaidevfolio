@@ -1,26 +1,29 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { CustomCursor } from "@/components/CustomCursor";
+import { SmoothScroll } from "@/components/SmoothScroll";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://petersudai.dev"),
-  title: "Peter Sudai — Fullstack Developer | Web Apps, SaaS & Backend Systems",
-  description: "Fullstack developer based in Nairobi, Kenya. I build web apps, SaaS products, and backend systems that help businesses acquire more customers and generate more revenue.",
-  keywords: ["fullstack developer", "web developer", "Next.js", "Python", "Nairobi", "Kenya", "SaaS", "freelance developer", "React developer", "backend developer", "M-Pesa integration"],
-  authors: [{ name: "Peter Gathuku Sudai" }],
+  title: "Peter Sudai | Fullstack Developer & Product Designer",
+  description: "Fullstack developer and product designer in Nairobi, Kenya. I design and build brand sites, web apps and platforms with studio level polish and engineering built to last.",
+  keywords: ["fullstack developer", "product designer", "web designer", "Next.js", "Python", "Nairobi", "Kenya", "brand websites", "freelance developer", "React developer", "UI design", "M-Pesa integration"],
+  authors: [{ name: "Peter Sudai" }],
   openGraph: {
-    title: "Peter Sudai — Fullstack Developer",
-    description: "I build web apps, SaaS products, and backend systems that make businesses grow.",
+    title: "Peter Sudai | Fullstack Developer & Product Designer",
+    description: "Brand sites, products and platforms. Designed and engineered end to end.",
     type: "website",
     locale: "en_US",
     url: "https://petersudai.dev",
     siteName: "Peter Sudai",
-    images: [{ url: "https://petersudai.dev/og", width: 1200, height: 630, alt: "Peter Sudai — Fullstack Developer" }],
+    images: [{ url: "https://petersudai.dev/og", width: 1200, height: 630, alt: "Peter Sudai | Fullstack Developer & Product Designer" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Peter Sudai — Fullstack Developer",
-    description: "I build web apps, SaaS products, and backend systems that make businesses grow.",
+    title: "Peter Sudai | Fullstack Developer & Product Designer",
+    description: "Brand sites, products and platforms. Designed and engineered end to end.",
     images: ["https://petersudai.dev/og"],
   },
   robots: {
@@ -33,8 +36,8 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Peter Gathuku Sudai",
-  jobTitle: "Fullstack Developer",
+  name: "Peter Sudai",
+  jobTitle: "Fullstack Developer & Product Designer",
   url: "https://petersudai.dev",
   email: "psudai@gmail.com",
   sameAs: [
@@ -45,10 +48,10 @@ const jsonLd = {
     addressLocality: "Nairobi",
     addressCountry: "KE",
   },
-  knowsAbout: ["Next.js", "React", "TypeScript", "Python", "Flask", "Node.js", "Supabase", "PostgreSQL", "SaaS Development", "REST APIs"],
+  knowsAbout: ["Product Design", "UI/UX Design", "Brand Websites", "Next.js", "React", "TypeScript", "Python", "Node.js", "Supabase", "PostgreSQL", "SaaS Development", "REST APIs"],
   offers: {
     "@type": "Offer",
-    description: "Fullstack web development services including SaaS products, web apps, APIs, and custom software solutions.",
+    description: "Design and development of brand sites, web apps, SaaS products and custom platforms, handled end to end from design to deployment.",
   },
 };
 
@@ -61,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap"
           rel="stylesheet"
         />
         {/* Calendly popup widget */}
@@ -76,6 +79,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased">
         {children}
+        <SmoothScroll />
+        <ScrollProgress />
+        <CustomCursor />
         <Analytics />
         <script
           src="https://assets.calendly.com/assets/external/widget.js"

@@ -55,11 +55,12 @@ export function Process() {
       <div className="max-w-6xl mx-auto px-6 relative z-10" ref={ref}>
         <div className={cn("mb-16 transition-all duration-700", v ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5")}>
           <div className="flex items-center gap-3 mb-5">
+            <span className="font-mono text-[10px]" style={{ color: "var(--t4)" }}>03</span>
             <div className="w-8 h-px" style={{ background: "var(--ac)" }}/>
             <span className="font-mono text-2xs" style={{ color: "var(--ac)", letterSpacing: "0.18em", textTransform: "uppercase" }}>How I work</span>
           </div>
           <h2 className="font-heading" style={{ fontSize: "clamp(2rem,4vw,3rem)", color: "var(--t1)", marginBottom: "1rem" }}>
-            From idea to shipped product
+            From idea to <span className="font-serif-display" style={{ color: "var(--ac3)" }}>shipped</span> product
           </h2>
           <p style={{ fontSize: "15px", color: "var(--t2)", maxWidth: "440px", lineHeight: 1.75 }}>
             A clear, collaborative process that keeps you in control without unnecessary back and forth.

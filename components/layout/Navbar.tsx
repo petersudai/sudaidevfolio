@@ -37,7 +37,13 @@ export function Navbar() {
       <nav className="max-w-6xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="group flex items-center gap-2.5">
-          <div className="relative w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-500/25 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:border-teal-500/50 group-hover:bg-teal-500/15">
+          <div className="relative w-9 h-9 rounded-xl bg-teal-500/10 flex items-center justify-center transition-all duration-300 group-hover:bg-teal-500/15">
+            {/* Border draws itself in on load */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <rect x="0.75" y="0.75" width="34.5" height="34.5" rx="11"
+                    stroke="var(--ac)" strokeWidth="1.5" strokeOpacity="0.45"
+                    className="logo-draw" />
+            </svg>
             <span className="font-heading font-bold text-xs text-teal-400 tracking-tight">PS</span>
           </div>
           <span className="font-heading font-bold text-[15px] text-ink-1 tracking-tight">
