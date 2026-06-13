@@ -34,9 +34,10 @@ export function CaseStudy({ project, next }: { project: Project; next: Project }
       });
       const inner = frame.querySelector("[data-frame-img]");
       if (inner) {
+        // Gentle drift only — keep scale near 1 so screenshots stay pixel sharp
         gsap.fromTo(inner,
-          { yPercent: -6, scale: 1.1 },
-          { yPercent: 6, scale: 1.1, ease: "none",
+          { yPercent: -2.5, scale: 1.05 },
+          { yPercent: 2.5, scale: 1.05, ease: "none",
             scrollTrigger: { trigger: frame, start: "top bottom", end: "bottom top", scrub: true } });
       }
     });
@@ -113,7 +114,7 @@ export function CaseStudy({ project, next }: { project: Project; next: Project }
              style={{ borderColor: `${accent}22`, aspectRatio: "16 / 10", background: "#03080e" }}>
           <div data-frame-img className="absolute inset-0">
             <Image src={lead.src} alt={`${project.title}, ${lead.label}`} fill priority
-                   className="object-cover object-top" sizes="(max-width: 1200px) 100vw, 1200px" quality={85} />
+                   className="object-contain" sizes="(max-width: 1200px) 100vw, 1200px" unoptimized />
           </div>
         </div>
       </section>
@@ -190,7 +191,7 @@ export function CaseStudy({ project, next }: { project: Project; next: Project }
                      style={{ borderColor: "rgba(255,255,255,0.07)", aspectRatio: wide ? "16 / 9" : "16 / 10", background: "#03080e" }}>
                   <div data-frame-img className="absolute inset-0">
                     <Image src={s.src} alt={`${project.title}, ${s.label}`} fill
-                           className="object-cover object-top" sizes="(max-width: 1200px) 100vw, 1000px" quality={85} />
+                           className="object-contain" sizes="(max-width: 1200px) 100vw, 1000px" unoptimized />
                   </div>
                   <div className="absolute bottom-4 left-4 z-10">
                     <span className="font-mono px-2.5 py-1 rounded-full"

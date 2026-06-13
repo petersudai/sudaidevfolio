@@ -63,7 +63,7 @@ export function About() {
                   alt="Peter Sudai"
                   fill
                   className="object-cover object-top"
-                  quality={85}
+                  quality={100}
                 />
               </div>
 

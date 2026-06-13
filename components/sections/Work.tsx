@@ -59,9 +59,9 @@ function ProjectCard({
 
     // Subtle parallax drift on the screenshots while scrolling through
     gsap.fromTo(inner,
-      { yPercent: -4, scale: 1.08 },
+      { yPercent: -1.5, scale: 1.03 },
       {
-        yPercent: 4, scale: 1.08, ease: "none",
+        yPercent: 1.5, scale: 1.03, ease: "none",
         scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
       }
     );
@@ -96,7 +96,7 @@ function ProjectCard({
                 fill
                 className="object-contain object-center"
                 sizes="(max-width: 1024px) 100vw, 60vw"
-                quality={85}
+                quality={100}
                 priority={featured && i === 0}
               />
             </div>
