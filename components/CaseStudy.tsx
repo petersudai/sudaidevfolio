@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 export function CaseStudy({ project, next }: { project: Project; next: Project }) {
   const root = useRef<HTMLDivElement>(null);
   const accent = project.accent;
-  const [lead, ...gallery] = project.screens;
+  const [lead, mid1, mid2, ...endGallery] = project.screens;
 
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -135,9 +135,61 @@ export function CaseStudy({ project, next }: { project: Project; next: Project }
                style={{ fontSize: "clamp(1.4rem,2.6vw,2rem)", lineHeight: 1.4, color: "var(--t1)", fontWeight: 600, letterSpacing: "-0.01em" }}>
               {project.intro}
             </p>
+            {project.introExtra && (
+              <p className="mt-7" style={{ fontSize: "16px", lineHeight: 1.75, color: "var(--t2)" }}>
+                {project.introExtra}
+              </p>
+            )}
           </div>
         </div>
       </section>
+
+      {/* Per-project stat block (e.g. PageSpeed before/after) */}
+      {project.stats && project.stats.length > 0 && (
+        <section className="relative z-10 max-w-6xl mx-auto px-6 mb-28 lg:mb-36">
+          <div data-rise className="flex items-center gap-3 mb-3">
+            <div className="h-px w-8" style={{ background: accent }} />
+            <span className="font-mono uppercase" style={{ fontSize: "11px", letterSpacing: "0.18em", color: accent }}>
+              {project.statsLabel ?? "Results"}
+            </span>
+          </div>
+          <div className="rounded-3xl overflow-hidden border" style={{ borderColor: "rgba(255,255,255,0.06)", background: "var(--s2)" }}>
+            {project.stats.map((s, i) => (
+              <div data-rise key={s.label}
+                   className="flex items-center justify-between gap-6 px-8 py-6"
+                   style={{ borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.06)" }}>
+                <span style={{ fontSize: "14px", color: "var(--t2)", fontWeight: 500 }}>{s.label}</span>
+                <div className="flex items-center gap-3 shrink-0">
+                  <span className="font-mono" style={{ fontSize: "15px", color: "var(--t4)" }}>{s.before}</span>
+                  <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                    <path d="M1 5h14M10 1l4 4-4 4" stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="font-mono font-bold" style={{ fontSize: "18px", color: accent }}>{s.after}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Visual break — image 2 */}
+      {mid1 && (
+        <section className="relative z-10 max-w-[1200px] mx-auto px-6 mb-28 lg:mb-36">
+          <div data-frame className="relative rounded-3xl overflow-hidden border"
+               style={{ borderColor: "rgba(255,255,255,0.07)", aspectRatio: "16 / 9", background: "#03080e" }}>
+            <div data-frame-img className="absolute inset-0">
+              <Image src={mid1.src} alt={`${project.title}, ${mid1.label}`} fill
+                     className="object-contain" sizes="(max-width: 1200px) 100vw, 1200px" unoptimized />
+            </div>
+            <div className="absolute bottom-4 left-4 z-10">
+              <span className="font-mono px-2.5 py-1 rounded-full"
+                    style={{ fontSize: "10px", background: "rgba(3,8,14,0.8)", border: "1px solid rgba(255,255,255,0.08)", color: "var(--t3)" }}>
+                {mid1.label}
+              </span>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Palette */}
       <section className="relative z-10 max-w-6xl mx-auto px-6 mb-28 lg:mb-36">
@@ -178,30 +230,45 @@ export function CaseStudy({ project, next }: { project: Project; next: Project }
         </div>
       </section>
 
-      {/* Gallery */}
-      {gallery.length > 0 && (
+      {/* Visual break — image 3 */}
+      {mid2 && (
+        <section className="relative z-10 max-w-[1200px] mx-auto px-6 mb-28 lg:mb-36">
+          <div data-frame className="relative rounded-3xl overflow-hidden border"
+               style={{ borderColor: "rgba(255,255,255,0.07)", aspectRatio: "16 / 9", background: "#03080e" }}>
+            <div data-frame-img className="absolute inset-0">
+              <Image src={mid2.src} alt={`${project.title}, ${mid2.label}`} fill
+                     className="object-contain" sizes="(max-width: 1200px) 100vw, 1200px" unoptimized />
+            </div>
+            <div className="absolute bottom-4 left-4 z-10">
+              <span className="font-mono px-2.5 py-1 rounded-full"
+                    style={{ fontSize: "10px", background: "rgba(3,8,14,0.8)", border: "1px solid rgba(255,255,255,0.08)", color: "var(--t3)" }}>
+                {mid2.label}
+              </span>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Remaining gallery images */}
+      {endGallery.length > 0 && (
         <section className="relative z-10 max-w-[1200px] mx-auto px-6 mb-28 lg:mb-36">
           <div className="flex flex-col gap-8 lg:gap-12">
-            {gallery.map((s, i) => {
-              // First gallery shot full width, then alternating pairs feel
-              const wide = i === 0 || i === gallery.length - 1;
-              return (
-                <div data-frame key={s.src}
-                     className={cn("relative rounded-3xl overflow-hidden border", wide ? "w-full" : "w-full lg:w-[85%]", !wide && i % 2 === 0 && "lg:ml-auto")}
-                     style={{ borderColor: "rgba(255,255,255,0.07)", aspectRatio: wide ? "16 / 9" : "16 / 10", background: "#03080e" }}>
-                  <div data-frame-img className="absolute inset-0">
-                    <Image src={s.src} alt={`${project.title}, ${s.label}`} fill
-                           className="object-contain" sizes="(max-width: 1200px) 100vw, 1000px" unoptimized />
-                  </div>
-                  <div className="absolute bottom-4 left-4 z-10">
-                    <span className="font-mono px-2.5 py-1 rounded-full"
-                          style={{ fontSize: "10px", background: "rgba(3,8,14,0.8)", border: "1px solid rgba(255,255,255,0.08)", color: "var(--t3)" }}>
-                      {s.label}
-                    </span>
-                  </div>
+            {endGallery.map((s, i) => (
+              <div data-frame key={s.src}
+                   className={cn("relative rounded-3xl overflow-hidden border", i % 2 === 1 ? "w-full lg:w-[85%] lg:ml-auto" : "w-full")}
+                   style={{ borderColor: "rgba(255,255,255,0.07)", aspectRatio: "16 / 9", background: "#03080e" }}>
+                <div data-frame-img className="absolute inset-0">
+                  <Image src={s.src} alt={`${project.title}, ${s.label}`} fill
+                         className="object-contain" sizes="(max-width: 1200px) 100vw, 1000px" unoptimized />
                 </div>
-              );
-            })}
+                <div className="absolute bottom-4 left-4 z-10">
+                  <span className="font-mono px-2.5 py-1 rounded-full"
+                        style={{ fontSize: "10px", background: "rgba(3,8,14,0.8)", border: "1px solid rgba(255,255,255,0.08)", color: "var(--t3)" }}>
+                    {s.label}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       )}

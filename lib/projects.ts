@@ -1,5 +1,7 @@
 export type Screen = { src: string; label: string };
 
+export type Stat = { label: string; before: string; after: string };
+
 export type Project = {
   slug: string;
   title: string;
@@ -16,9 +18,12 @@ export type Project = {
   role: string;
   location: string;
   intro: string;
+  introExtra?: string;
   highlights: string[];
   stack: string[];
   palette: { name: string; hex: string }[];
+  statsLabel?: string;
+  stats?: Stat[];
 };
 
 /*
@@ -84,11 +89,23 @@ export const PROJECTS: Project[] = [
     ],
     intro:
       "Augere Global advises businesses on capital raising and customer experience across three regions. The site needed to carry that weight without overexplaining it. Two services, one standard. The design leads with the headline and lets the work speak from there.",
+    introExtra:
+      "Given no formal brief, I identified the brief myself: the existing site underperformed on mobile and lagged on technical SEO. I rebuilt it from scratch, mobile-first, in plain HTML, CSS, and JavaScript per the client's requirement, no frameworks.",
     highlights: [
       "Two services presented as a single, unified offer",
       "Hero with rotating full bleed photography from the sectors served",
       "Sector and financing tags that map the full service range",
       "Contact section built to start a conversation, not fill a form",
+      "Mobile-first rebuild that measurably improved performance and SEO",
+      "Clean, no-framework codebase the client can maintain without a developer",
+    ],
+    statsLabel: "Results · Google PageSpeed Insights, mobile",
+    stats: [
+      { label: "Performance, +20%",      before: "65",   after: "78"  },
+      { label: "Accessibility, +19%",    before: "81",   after: "96"  },
+      { label: "SEO, +20%",              before: "83",   after: "100" },
+      { label: "Largest Contentful Paint", before: "6.0s", after: "4.5s" },
+      { label: "First Contentful Paint",   before: "4.4s", after: "2.6s" },
     ],
     stack: ["HTML", "CSS", "JavaScript"],
     screens: [
